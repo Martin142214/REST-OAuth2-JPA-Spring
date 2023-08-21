@@ -5,22 +5,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.crypto.spec.SecretKeySpec;
-
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+@Component
 public class JwtUtil {
     
     @Value("${auth.secret_key}")
     private String SECRET_KEY;
 
-    public String extractUsernameFromToken(String token) {
+    public String getUsernameFromToken(String token) {
         String username;
 
         try {
@@ -60,6 +59,11 @@ public class JwtUtil {
                       .setSubject(subject)
                       .setIssuedAt(new Date(System.currentTimeMillis()))
                       .setExpiration(new Date(System.currentTimeMillis() + 1000*60*60*10))
-                      .signWith(SignatureAlgorithm.ES256, SECRET_KEY).compact();
+                      .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+    }
+
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        String username = getUsernameFromToken(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }
