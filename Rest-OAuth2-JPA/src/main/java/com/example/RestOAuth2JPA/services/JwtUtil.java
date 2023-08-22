@@ -1,5 +1,6 @@
 package com.example.RestOAuth2JPA.services;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,9 +15,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
-public class JwtUtil {
+public class JwtUtil{
     
-    @Value("${auth.secret_key}")
+    @Value("${jwt.secret}")
     private String SECRET_KEY;
 
     public String getUsernameFromToken(String token) {
@@ -59,7 +60,7 @@ public class JwtUtil {
                       .setSubject(subject)
                       .setIssuedAt(new Date(System.currentTimeMillis()))
                       .setExpiration(new Date(System.currentTimeMillis() + 1000*60*60*10))
-                      .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+                      .signWith(SignatureAlgorithm.HS512, SECRET_KEY.getBytes()).compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
