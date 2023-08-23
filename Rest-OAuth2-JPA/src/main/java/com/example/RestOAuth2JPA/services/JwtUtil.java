@@ -24,10 +24,11 @@ public class JwtUtil{
         String username;
 
         try {
-            Claims claims = getAllClaimsFromToken(token);
-            username = claims.getSubject();
+            username = getClaimFromToken(token, Claims::getSubject);
+            //username = claims.getSubject();
         } catch (Exception e) {
             username = null;
+            System.out.println(e.getMessage());
         }
         return username;
     }
@@ -37,7 +38,7 @@ public class JwtUtil{
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(token).getBody();
     }
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
