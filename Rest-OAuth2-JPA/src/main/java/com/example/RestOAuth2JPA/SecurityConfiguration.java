@@ -29,7 +29,7 @@ import com.example.RestOAuth2JPA.services.UserDetailsServiceImplementation;
 public class SecurityConfiguration{
 
     @Autowired
-    private AuthToken authToken;
+    private JwtRequestFilter jwtRequestFilter;
 
     @Autowired
     private UserDetailsServiceImplementation myUserDetailsServiceImplementation;
@@ -84,7 +84,7 @@ public class SecurityConfiguration{
                     .authorizeRequests().requestMatchers("/api/v1/authenticate").permitAll()
                     .anyRequest().authenticated()
                     .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
-        http.addFilterBefore(new JwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
                 
 
         return http.build();
