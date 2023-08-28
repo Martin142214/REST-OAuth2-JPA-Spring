@@ -39,7 +39,7 @@ public class ItemsRestController {
         
     }
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public String authenticate(@RequestBody AuthenticationRequest authenticationRequest, Model model) throws Exception {
         AuthenticationResponse response = _authService.authenticate(authenticationRequest);
         model.addAttribute("authToken", response.getResponseToken());
@@ -49,5 +49,5 @@ public class ItemsRestController {
     @GetMapping("/home")
     public String home() {
         return "index.html";
-    }
+    }*/
 }
