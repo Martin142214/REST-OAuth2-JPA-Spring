@@ -20,7 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.example.RestOAuth2JPA.DTO.entities.classModels.AuthToken;
-import com.example.RestOAuth2JPA.filters.JwtRequestFilter;
+//import com.example.RestOAuth2JPA.filters.JwtRequestFilter;
 import com.example.RestOAuth2JPA.services.UserDetailsServiceImplementation;
 
 
@@ -29,8 +29,8 @@ import com.example.RestOAuth2JPA.services.UserDetailsServiceImplementation;
 @EnableWebSecurity
 public class SecurityConfiguration{
 
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+    //@Autowired
+    //private JwtRequestFilter jwtRequestFilter;
 
     @Autowired
     private UserDetailsServiceImplementation myUserDetailsServiceImplementation;
@@ -83,10 +83,13 @@ public class SecurityConfiguration{
         return http.build();*/
         http.csrf().disable()
                     .authorizeRequests().requestMatchers("/authenticate").permitAll()
-                    .requestMatchers(HttpMethod.GET,"/login").permitAll()
+                    .requestMatchers("/login").permitAll()
+                    .requestMatchers("/home").hasAuthority("USER")
                     .anyRequest().authenticated()
-                    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                    //.and().formLogin().loginPage("/login").loginProcessingUrl("/authenticate").permitAll()
+                    .and().logout().logoutSuccessUrl("/login").permitAll()
+                    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        //http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
                 
 
         return http.build();
