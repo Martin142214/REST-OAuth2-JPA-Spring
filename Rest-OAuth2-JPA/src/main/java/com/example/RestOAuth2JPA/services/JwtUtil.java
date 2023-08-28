@@ -42,7 +42,7 @@ public class JwtUtil{
     }
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        Claims claims = getAllClaimsFromToken(token); 
+        Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
 
