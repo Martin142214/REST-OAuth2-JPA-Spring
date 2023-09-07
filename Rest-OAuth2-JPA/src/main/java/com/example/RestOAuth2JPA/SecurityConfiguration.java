@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,14 +19,17 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.example.RestOAuth2JPA.DTO.entities.classModels.AuthToken;
+import com.example.RestOAuth2JPA.DTO.classModels.AuthToken;
 //import com.example.RestOAuth2JPA.filters.JwtRequestFilter;
 import com.example.RestOAuth2JPA.services.UserDetailsServiceImplementation;
 
 
 @Configuration
+@EnableJpaRepositories
 @ConfigurationProperties(prefix = "auth")
+@EnableTransactionManagement
 @EnableWebSecurity
 public class SecurityConfiguration{
 
@@ -83,7 +87,8 @@ public class SecurityConfiguration{
         return http.build();*/
         http.csrf().disable()
                     .authorizeRequests().requestMatchers("/authenticate").permitAll()
-                    .requestMatchers("/login").permitAll()
+                    .requestMatchers("/user/create").permitAll()
+                    .requestMatchers("/patients").permitAll()
                     .requestMatchers("/home").hasAuthority("USER")
                     .anyRequest().authenticated()
                     //.and().formLogin().loginPage("/login").loginProcessingUrl("/authenticate").permitAll()
