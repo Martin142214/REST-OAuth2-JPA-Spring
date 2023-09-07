@@ -9,4 +9,47 @@ public class PersonalInfo {
 
     //ЕГН
     private Integer verificationCode;
+
+    public PersonalInfo(String firstName, String lastName, Address address, Integer verificationCode) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.verificationCode = verificationCode;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Integer getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(Integer verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public PersonalInfo() {
+        
+    }
 }
