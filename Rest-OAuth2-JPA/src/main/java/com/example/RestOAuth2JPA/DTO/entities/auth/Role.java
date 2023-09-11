@@ -3,8 +3,7 @@ package com.example.RestOAuth2JPA.DTO.entities.auth;
 import java.util.Collection;
 import java.util.UUID;
 
-import org.springframework.data.annotation.Id;
-
+import jakarta.persistence.Id;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
