@@ -1,6 +1,20 @@
 package com.example.RestOAuth2JPA.DTO.classModels.patient;
 
+import com.example.RestOAuth2JPA.DTO.entities.Patient;
+
+import jakarta.persistence.*;
+
+@Entity
 public class PersonalInfo {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "patient_id", referencedColumnName = "id")
+    private Patient person;
+
     private String firstName;
 
     private String lastName;
