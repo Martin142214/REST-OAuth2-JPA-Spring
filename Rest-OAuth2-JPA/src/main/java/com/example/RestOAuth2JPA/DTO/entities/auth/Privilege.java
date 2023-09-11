@@ -1,34 +1,27 @@
 package com.example.RestOAuth2JPA.DTO.entities.auth;
 
 import java.util.Collection;
-import java.util.UUID;
 
-import org.hibernate.annotations.ManyToAny;
-import org.springframework.data.annotation.Id;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "PRIVILEGES")
 public class Privilege {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String name;
 
     @ManyToMany(mappedBy = "privileges")
     private Collection<Role> roles;
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
