@@ -8,6 +8,7 @@ import com.example.RestOAuth2JPA.DTO.classModels.patient.Address;
 import com.example.RestOAuth2JPA.DTO.classModels.patient.PersonalInfo;
 import com.example.RestOAuth2JPA.enums.Status;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +17,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.websocket.OnError;
 
 @Entity
 @Table(name = "PATIENTS")
@@ -26,16 +29,17 @@ public class Patient implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "person")
     private PersonalInfo personalInfo;
 
     private Status status;
 
     //many patients belong to one doctor
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id")
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "patient")
     private Collection<Note> notes;
 
     public Patient(PersonalInfo personalInfo, Status status) {
