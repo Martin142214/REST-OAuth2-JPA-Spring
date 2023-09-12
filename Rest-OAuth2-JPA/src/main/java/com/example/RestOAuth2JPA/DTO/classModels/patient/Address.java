@@ -3,6 +3,7 @@ package com.example.RestOAuth2JPA.DTO.classModels.patient;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "address")
 public class Address {
 
     @Id

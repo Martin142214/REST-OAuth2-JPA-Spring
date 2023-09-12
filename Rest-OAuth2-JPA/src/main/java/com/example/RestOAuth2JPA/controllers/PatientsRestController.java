@@ -27,6 +27,7 @@ import com.example.RestOAuth2JPA.DTO.classModels.patient.Address;
 import com.example.RestOAuth2JPA.DTO.classModels.patient.PersonalInfo;
 import com.example.RestOAuth2JPA.DTO.entities.Patient;
 import com.example.RestOAuth2JPA.DTO.entities.auth.User;
+import com.example.RestOAuth2JPA.DTO.repositories.IPatientRepository;
 import com.example.RestOAuth2JPA.DTO.repositories.IUsersRepository;
 import com.example.RestOAuth2JPA.enums.Status;
 import com.example.RestOAuth2JPA.services.AuthService;
@@ -47,6 +48,8 @@ public class PatientsRestController {
     @Autowired AuthService _authService;
 
     @Autowired IUsersRepository usersRepository;
+
+    @Autowired IPatientRepository patientRepository;
 
     @Autowired
     public PatientsRestController() {
@@ -74,5 +77,11 @@ public class PatientsRestController {
         Patient patient = new Patient(personalInfo, Status.Unknown);
         User user = new User(username, password, email, null, patient);
         return usersRepository.save(user);
+    }
+
+    @PostMapping("/patient/create")
+    public Patient create(){
+        Patient patient = new Patient();
+        return patientRepository.save(patient);
     }
 }
