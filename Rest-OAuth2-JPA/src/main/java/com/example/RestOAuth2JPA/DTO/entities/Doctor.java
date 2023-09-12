@@ -3,6 +3,7 @@ package com.example.RestOAuth2JPA.DTO.entities;
 import java.util.Collection;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -12,25 +13,27 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "DOCTORS")
+@Table(name = "doctors")
 public class Doctor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(name = "doctor_firstname")
     private String firstName;
 
+    @Column(name = "doctor_lastname")
     private String lastName;
 
     //отделение пример: ортопедия
     private String department;
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
