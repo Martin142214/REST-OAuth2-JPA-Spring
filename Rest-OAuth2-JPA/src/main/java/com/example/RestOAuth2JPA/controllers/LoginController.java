@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.example.RestOAuth2JPA.DTO.entities.classModels.AuthenticationRequest;
-import com.example.RestOAuth2JPA.DTO.entities.classModels.AuthenticationResponse;
+import com.example.RestOAuth2JPA.DTO.classModels.AuthenticationResponse;
 import com.example.RestOAuth2JPA.services.AuthService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,15 +31,8 @@ public class LoginController {
         return "login.html";
     }
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public RedirectView authenticate(/*@RequestBody*/ AuthenticationRequest authenticationRequest, HttpServletRequest request) throws Exception {
-        boolean isAuthenticated = _authService.authenticate(authenticationRequest, request);
-        if (isAuthenticated) {
-            var auth = SecurityContextHolder.getContext().getAuthentication();
-            return _authService.redirectView("http://localhost:8080/home");
-        }
-        else {
-            return _authService.redirectView("http://localhost:8080/login");
-        }
+    @RequestMapping(value = "/user/register", method = RequestMethod.GET)
+    public String register_new_user_patient() {
+        return "/auth/registration_form.html";
     }
 }
