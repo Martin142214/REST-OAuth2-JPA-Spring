@@ -1,5 +1,6 @@
 package com.example.RestOAuth2JPA.DTO.entities.auth;
 
+import java.util.Collection;
 import java.util.UUID;
 
 import com.example.RestOAuth2JPA.DTO.entities.Patient;
@@ -7,35 +8,40 @@ import com.example.RestOAuth2JPA.DTO.entities.Patient;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "username", unique = true, nullable = false, length = 24)
     private String username;
 
-    @Column(name = "password", nullable = false, length = 24)
+    @Column(name = "user_password", nullable = false, length = 24)
     private String password;
 
-    @Column(name = "email", unique = true, nullable = false)
+    @Column(name = "user_email", unique = true, nullable = false)
     private String email;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @ManyToMany 
+    @JoinTable( 
+        name = "users_roles", 
+        joinColumns = @JoinColumn(
+          name = "user_id", referencedColumnName = "id"), 
+        inverseJoinColumns = @JoinColumn(
+          name = "role_id", referencedColumnName = "id")) 
+    private Collection<Role> roles;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -63,12 +69,8 @@ public class User {
         this.email = email;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
+    public Collection<Role> getRoles() {
+        return roles;
     }
 
     public Patient getPatient() {
@@ -83,7 +85,6 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.role = role;
         this.patient = patient;
     }
 
