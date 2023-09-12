@@ -5,6 +5,7 @@ import com.example.RestOAuth2JPA.DTO.entities.Patient;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "personal_info")
 public class PersonalInfo {
 
     @Id
@@ -15,20 +16,23 @@ public class PersonalInfo {
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient person;
 
+    @Column(name = "patient_firstname")
     private String firstName;
 
+    @Column(name = "patient_lastname")
     private String lastName;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "personalInfo")
-    private Address address;
+    private Address addressData;
 
     //ЕГН
+    @Column(name = "egn_person_id")
     private Integer verificationCode;
 
     public PersonalInfo(String firstName, String lastName, Address address, Integer verificationCode) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = address;
+        this.addressData = address;
         this.verificationCode = verificationCode;
     }
 
@@ -49,11 +53,11 @@ public class PersonalInfo {
     }
 
     public Address getAddress() {
-        return address;
+        return addressData;
     }
 
     public void setAddress(Address address) {
-        this.address = address;
+        this.addressData = address;
     }
 
     public Integer getVerificationCode() {
