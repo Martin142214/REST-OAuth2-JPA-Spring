@@ -19,6 +19,7 @@ public class PersonalInfo {
 
     private String lastName;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "personalInfo")
     private Address address;
 
     //ЕГН
