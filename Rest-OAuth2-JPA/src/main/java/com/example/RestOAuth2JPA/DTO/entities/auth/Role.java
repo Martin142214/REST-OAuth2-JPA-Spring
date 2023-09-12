@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,26 +14,30 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "ROLES")
+@Table(name = "roles")
 public class Role {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
+    @Column(name = "role_name", nullable = false)
     private String name;
 
+    @ManyToMany(mappedBy = "roles")
+    private Collection<User> users;
+
     @ManyToMany
-    @JoinTable(name = "ROLES_PRIVILEGES", 
-               joinColumns = @JoinColumn(name = "role_id"),
-               inverseJoinColumns = @JoinColumn(name = "privilege_id"))
+    @JoinTable(name = "roles_privileges", 
+               joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
     private Collection<Privilege> privileges;
 
-    public UUID getId() {
+    public Long getId() {
       return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
       this.id = id;
     }
 
