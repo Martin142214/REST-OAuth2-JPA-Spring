@@ -5,13 +5,14 @@ import java.util.Collection;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "PRIVILEGES")
+@Table(name = "privileges")
 public class Privilege {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "privilege_name", nullable = false)
     private String name;
 
     @ManyToMany(mappedBy = "privileges")
