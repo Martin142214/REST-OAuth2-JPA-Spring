@@ -7,4 +7,7 @@ import com.example.RestOAuth2JPA.DTO.entities.auth.User;
 
 public interface IUsersRepository extends JpaRepository<User, UUID> {
     
+    User findByUsername(String username);
+    
+    User findByEmail(String email);
 }
