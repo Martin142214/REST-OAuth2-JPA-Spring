@@ -15,81 +15,63 @@
 
     <div class="w3-container w3-half w3-margin-top">
 
-        <form class="w3-container w3-card-4">
+        <form class="w3-container w3-card-4" th:action="@{/user/register}" method="post">
 
             <div>
-                <input class="w3-input" type="text" style="width:90%" required>
+                <input class="w3-input" type="text" name="email" style="width:90%" required>
                 <label class="w3-label w3-validate">Email</label>
             </div>
 
             <div>
-                <input class="w3-input" type="password" style="width:90%" required>
+                <input class="w3-input" type="password" name="password" style="width:90%" required>
                 <label class="w3-label w3-validate">Password</label>
             </div>
 
             <div>
-                <label>Username:</label>
+                <label>Username*</label>
                 <input type="text" name="username" minlength="5" maxlength="25" placeholder="user123" required/>
             </div>
 
             <div>
-                <label>Firstname:</label>
-                <input type="text" name="firstName" minlength="5" maxlength="25" placeholder="Steven" required/>
-            </div>
-
-            <div>
-                <label>Lastname:</label>
-                <input type="text" name="lastName" minlength="5" maxlength="25" placeholder="Hawkins" required/>
-            </div>
-
-            <div>
-                <label>Verification code - ЕГН:</label>
-                <input type="number" name="verificationCode" minlength="10" maxlength="10" placeholder="0314228734" required/>
-            </div>
-
-            <div>
-                <h6>Address data:</h6>
+                <h6>Personal info:</h6>
                 <div>
-                    <label>Street name:</label>
-                    <input type="text" name="street" minlength="2" maxlength="20" placeholder="Selvi street" required/>
+                    <label>Firstname*</label>
+                    <input type="text" name="firstName" minlength="5" maxlength="25" placeholder="Steven" required/>
                 </div>
-
+    
                 <div>
-                    <label>City:</label>
-                    <input type="text" name="city" maxlength="20" placeholder="Paris" required/>
+                    <label>Lastname*</label>
+                    <input type="text" name="lastName" minlength="5" maxlength="25" placeholder="Hawkins" required/>
                 </div>
-
+    
                 <div>
-                    <label>Postcode:</label>
-                    <input type="number" name="postCode" maxlength="5" placeholder="5630" required/>
+                    <label>Verification code - ЕГН*</label>
+                    <input type="number" name="verificationCode" minlength="10" maxlength="10" placeholder="0314228734" required/>
                 </div>
+    
+                <div>
+                    <h6>Address data:</h6>
+                    <div>
+                        <label>Street name*</label>
+                        <input type="text" name="street" minlength="2" maxlength="20" placeholder="Selvi street" required/>
+                    </div>
+    
+                    <div>
+                        <label>City*</label>
+                        <input type="text" name="city" maxlength="20" placeholder="Paris" required/>
+                    </div>
+    
+                    <div>
+                        <label>Postcode*</label>
+                        <input type="number" name="postCode" maxlength="5" placeholder="5630" required/>
+                    </div>
+                </div>
+            
             </div>
 
             <div>
-                <label>Status:</label>
-                <select class="form-control" id="statusOptions" name="status" title="colors">
-                    <option id="statusOption" th:each="statusOpt : ${T(com.example.RestOAuth2JPA.enums.Status).values()}" th:text="${statusOpt}" th:value="${statusOpt}"></option>
-                </select>
+                <button type="submit" id="file-submit" class="btn btn-primary">Register</button>
             </div>
-
-            <p>
-                <input class="w3-radio" type="radio" name="gender" value="female">
-                <label class="w3-validate">Female</label>
-            </p>
-
-            <p>
-                <input class="w3-radio" type="radio" name="gender" value="" disabled>
-                <label class="w3-validate">Don't know (Disabled)</label>
-            </p>
-
-            <p>
-                <input id="milk" class="w3-check" type="checkbox" checked="checked">
-                <label class="w3-validate">Stay logged in</label>
-            </p>
-
-            <p>
-                <button class="w3-btn w3-section w3-teal w3-ripple"> Log in </button>
-            </p>
 
         </form>
 
