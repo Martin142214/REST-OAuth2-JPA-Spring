@@ -16,6 +16,14 @@ public class PersonalInfo {
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient person;
 
+    public Patient getPerson() {
+        return person;
+    }
+
+    public void setPerson(Patient person) {
+        this.person = person;
+    }
+
     @Column(name = "patient_firstname")
     private String firstName;
 
