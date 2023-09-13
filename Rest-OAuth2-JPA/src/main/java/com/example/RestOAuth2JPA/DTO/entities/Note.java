@@ -2,7 +2,9 @@ package com.example.RestOAuth2JPA.DTO.entities;
 
 import java.io.Serializable;
 
-import com.example.RestOAuth2JPA.DTO.classModels.patient.NoteData;
+import com.example.RestOAuth2JPA.DTO.entities.doctor.Doctor;
+import com.example.RestOAuth2JPA.DTO.entities.patient.NoteData;
+import com.example.RestOAuth2JPA.DTO.entities.patient.Patient;
 
 import jakarta.persistence.*;
 
