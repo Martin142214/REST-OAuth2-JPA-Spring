@@ -3,7 +3,10 @@ package com.example.RestOAuth2JPA.DTO.entities.auth;
 import java.util.Collection;
 import java.util.UUID;
 
+import org.hibernate.mapping.List;
+
 import jakarta.persistence.Id;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,7 +28,10 @@ public class Role {
     @Column(name = "role_name", nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    /*@ManyToMany(mappedBy = "roles")
+    private Collection<User> users;*/
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
     private Collection<User> users;
 
     @ManyToMany

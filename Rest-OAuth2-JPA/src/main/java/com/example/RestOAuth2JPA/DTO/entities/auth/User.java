@@ -1,9 +1,7 @@
 package com.example.RestOAuth2JPA.DTO.entities.auth;
 
-import java.util.Collection;
-import java.util.UUID;
-
-import com.example.RestOAuth2JPA.DTO.entities.Patient;
+import com.example.RestOAuth2JPA.DTO.entities.FileDB;
+import com.example.RestOAuth2JPA.DTO.entities.patient.Patient;
 
 import jakarta.persistence.*;
 
@@ -24,18 +22,35 @@ public class User {
     @Column(name = "user_email", unique = true, nullable = false)
     private String email;
 
-    @ManyToMany 
+    @Column(name = "isEnabled", nullable = false)
+    private boolean enabled;
+
+    @Column(name = "isExpired", nullable = false)
+    private boolean tokenExpired;
+
+    @Column(name = "isAdmin", nullable = false)
+    private boolean isAdmin;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private FileDB profileImage;
+
+    /*@ManyToMany 
     @JoinTable( 
         name = "users_roles", 
         joinColumns = @JoinColumn(
           name = "user_id", referencedColumnName = "id"), 
         inverseJoinColumns = @JoinColumn(
           name = "role_id", referencedColumnName = "id")) 
-    private Collection<Role> roles;
+    private Collection<Role> roles;*/
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
+
+    /*@OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
+    private Patient patient;*/
 
     public Long getId() {
         return id;
@@ -69,23 +84,19 @@ public class User {
         this.email = email;
     }
 
-    public Collection<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public User(String username, String password, String email, Role role, Patient patient) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.patient = patient;
+        this.role = role;
     }
 
     public User() {
