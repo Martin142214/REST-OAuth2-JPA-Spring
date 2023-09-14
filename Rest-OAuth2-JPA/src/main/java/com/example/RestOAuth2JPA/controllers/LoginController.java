@@ -131,7 +131,8 @@ public class LoginController {
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
     public RedirectView register_new_user_patient(@ModelAttribute User user, 
                                                    String firstName, String lastName, Integer verificationCode, 
-                                                   String street, String city, Integer postCode) {
+                                                   String street, String city, Integer postCode,
+                                                   @RequestParam("userImage") MultipartFile userImage) {
 
         if (userService.emailExist(user.getEmail())) {
             String email = user.getEmail();
@@ -152,20 +153,37 @@ public class LoginController {
             }
         }
         
+        try {
+            Address address = new Address(street, city, postCode);
+            
+            Personal_patient_info info = new Personal_patient_info(firstName, lastName, address, verificationCode);
 
-                                                
-        Address address = new Address(street, city, postCode);
-        addressRepository.save(address);
+            address.setPersonalInfo(info);
+            
+            Patient patient = new Patient(info, Status.Unknown);
+            patient.setNotes(new ArrayList<>());
+            info.setPerson(patient);
+            
+            String encodedPass = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encodedPass);
+            user.setEnabled(true);
+            user.setRole(roleService.findByName("ROLE_PATIENT"));
+            FileDB userImageFile = FileUploadUtils.mkdir_and_upload_file_and_return_imagePath(user.getUsername(), user.getRole(), userImage);
+            user.setProfileImage(userImageFile);
+            
+            patient.setUser(user);
+            int i = 0;
 
-        Personal_patient_info info = new Personal_patient_info(firstName, lastName, address, verificationCode);
-        personalInfoRepository.save(info);
-
-        Patient patient = new Patient(info, Status.Unknown);
-        patient.setNotes(new ArrayList<>());
-        patientRepository.save(patient);
-
-        userService.save_new_user(user);
-
+            fileDBRepository.save(userImageFile);
+            userService.save_new_user(user);
+            patientRepository.save(patient);
+            personalInfoRepository.save(info);
+            addressRepository.save(address); 
+        } 
+        catch (Exception e) {
+            throw new Error(e.getMessage());
+        }
+        
         return redirectView("http://localhost:8080/patients");
     }
 
