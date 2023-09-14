@@ -3,6 +3,7 @@ package com.example.RestOAuth2JPA;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +16,10 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -27,6 +30,7 @@ import com.example.RestOAuth2JPA.services.UserDetailsServiceImplementation;
 
 
 @Configuration
+@EnableAutoConfiguration
 @EnableJpaRepositories
 @ConfigurationProperties(prefix = "auth")
 @EnableTransactionManagement
@@ -65,7 +69,7 @@ public class SecurityConfiguration{
 
     @Bean
     protected PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new StandardPasswordEncoder();
     }
 
     @Bean
@@ -87,7 +91,8 @@ public class SecurityConfiguration{
         return http.build();*/
         http.csrf().disable()
                     .authorizeRequests().requestMatchers("/authenticate").permitAll()
-                    .requestMatchers("/user/create").permitAll()
+                    .requestMatchers("/user/register").permitAll()
+                    .requestMatchers("/admin/register").permitAll()
                     .requestMatchers("/patients").permitAll()
                     .requestMatchers("/home").hasAuthority("USER")
                     .anyRequest().authenticated()
