@@ -39,11 +39,18 @@ public class User {
     @JoinColumn(name = "image_id", referencedColumnName = "id")
     private FileDB profileImage;
     
-    public User(String username, String password, String email, Role role, Patient patient) {
+    public User(String username, String password, String email, 
+                Role role, Patient patient, boolean isEnabled, 
+                boolean isTokenExpired, boolean isAdmin, FileDB profileImage) {
+
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
+        this.enabled = isEnabled;
+        this.tokenExpired = isTokenExpired;
+        this.isAdmin = isAdmin;
+        this.profileImage = profileImage;
     }
 
     public User() {
