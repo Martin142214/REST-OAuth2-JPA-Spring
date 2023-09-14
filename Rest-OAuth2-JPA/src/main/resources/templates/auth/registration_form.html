@@ -15,7 +15,7 @@
 
     <div class="w3-container w3-half w3-margin-top">
 
-        <form class="w3-container w3-card-4" th:action="@{/user/register}" method="post">
+        <form class="w3-container w3-card-4" th:action="@{/user/register}" method="post" enctype="multipart/form-data">
 
             <div>
                 <input class="w3-input" type="text" name="email" style="width:90%" required>
@@ -65,6 +65,11 @@
                         <label>Postcode*</label>
                         <input type="number" name="postCode" maxlength="5" placeholder="5630" required/>
                     </div>
+                </div>
+
+                <div>
+                    <label id="imageLabel"><b>User profile image</b></label>
+                    <input type="file" id="userImage" title="file" class="form-control" name="userImage" accept="image/png, image/jpeg" required>
                 </div>
             
             </div>
