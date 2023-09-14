@@ -16,7 +16,7 @@ public class User {
     @Column(name = "username", unique = true, nullable = false, length = 24)
     private String username;
 
-    @Column(name = "user_password", nullable = false, length = 24)
+    @Column(name = "user_password", nullable = false)
     private String password;
 
     @Column(name = "user_email", unique = true, nullable = false)
@@ -38,7 +38,18 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id", referencedColumnName = "id")
     private FileDB profileImage;
+    
+    public User(String username, String password, String email, Role role, Patient patient) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+    }
 
+    public User() {
+        
+    }
+    
     /*@ManyToMany 
     @JoinTable( 
         name = "users_roles", 
@@ -51,6 +62,38 @@ public class User {
 
     /*@OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
     private Patient patient;*/
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isTokenExpired() {
+        return tokenExpired;
+    }
+
+    public void setTokenExpired(boolean tokenExpired) {
+        this.tokenExpired = tokenExpired;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public FileDB getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(FileDB profileImage) {
+        this.profileImage = profileImage;
+    }
 
     public Long getId() {
         return id;
@@ -92,14 +135,4 @@ public class User {
         this.role = role;
     }
 
-    public User(String username, String password, String email, Role role, Patient patient) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.role = role;
-    }
-
-    public User() {
-        
-    }
 }
