@@ -51,6 +51,7 @@ public class Patient implements Serializable {
     private User user;
 
 
+    
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "patient")
     private Collection<Note> notes;
 
@@ -58,11 +59,11 @@ public class Patient implements Serializable {
         this.personalInfo = personalInfo;
         this.status = status;
     }
-
+    
     public Patient() {
         
     }
-
+    
     public Long getId() {
         return id;
     }
@@ -70,23 +71,23 @@ public class Patient implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
+    
     public Personal_patient_info getPersonalInfo() {
         return personalInfo;
     }
-
+    
     public void setPersonalInfo(Personal_patient_info personalInfo) {
         this.personalInfo = personalInfo;
     }
-
+    
     public Status getStatus() {
         return status;
     }
-
+    
     public void setStatus(Status status) {
         this.status = status;
     }
-
+    
     public Doctor getDoctor() {
         return doctor;
     }
@@ -94,12 +95,20 @@ public class Patient implements Serializable {
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
     }
-
+    
     public Collection<Note> getNotes() {
         return notes;
     }
-
+    
     public void setNotes(Collection<Note> notes) {
         this.notes = notes;
+    }
+    
+    public User getUser() {
+        return user;
+    }
+    
+    public void setUser(User user) {
+        this.user = user;
     }
 }
