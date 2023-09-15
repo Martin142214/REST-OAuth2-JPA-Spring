@@ -3,6 +3,8 @@ package com.example.RestOAuth2JPA.controllers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -49,7 +51,6 @@ public class LoginController {
     private AuthService _authService;
 
     @Autowired UserService userService;
-
     
     @Autowired RoleService roleService;
     
@@ -94,6 +95,11 @@ public class LoginController {
         roleService.createRoleIfNotFound("ROLE_DOCTOR", Arrays.asList(readPrivilege));*/
 
         // the above is done; saved in the DB
+
+        // get all users with all their parent entities data
+        /*var users = userService.get_all_users().stream()
+                                               .filter(u -> !u.isAdmin())
+                                               .collect(Collectors.toList());*/
         
         User user = new User();
         
@@ -130,7 +136,7 @@ public class LoginController {
 
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
     public RedirectView register_new_user_patient(@ModelAttribute User user, 
-                                                   String firstName, String lastName, Integer verificationCode, 
+                                                   String firstName, String lastName, String verificationCode, 
                                                    String street, String city, Integer postCode,
                                                    @RequestParam("userImage") MultipartFile userImage) {
 
@@ -158,11 +164,14 @@ public class LoginController {
             
             Personal_patient_info info = new Personal_patient_info(firstName, lastName, address, verificationCode);
 
-            address.setPersonalInfo(info);
+            //address.setPersonalInfo(info);
+            //1 info.setAddress(address);
             
             Patient patient = new Patient(info, Status.Unknown);
             patient.setNotes(new ArrayList<>());
-            info.setPerson(patient);
+
+            //info.setPerson(patient);
+            //1 patient.setPersonalInfo(info);
             
             String encodedPass = passwordEncoder.encode(user.getPassword());
             user.setPassword(encodedPass);
@@ -171,14 +180,15 @@ public class LoginController {
             FileDB userImageFile = FileUploadUtils.mkdir_and_upload_file_and_return_imagePath(user.getUsername(), user.getRole(), userImage);
             user.setProfileImage(userImageFile);
             
-            patient.setUser(user);
+            //patient.setUser(user);
+            user.setPatient(patient);
             int i = 0;
 
             fileDBRepository.save(userImageFile);
-            userService.save_new_user(user);
-            patientRepository.save(patient);
-            personalInfoRepository.save(info);
             addressRepository.save(address); 
+            personalInfoRepository.save(info);
+            patientRepository.save(patient);
+            userService.save_new_user(user);
         } 
         catch (Exception e) {
             throw new Error(e.getMessage());
