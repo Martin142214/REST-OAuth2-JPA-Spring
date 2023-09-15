@@ -10,8 +10,7 @@ public class Personal_patient_info {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "patient_id", referencedColumnName = "id")
+    /*@OneToOne(cascade = CascadeType.ALL, mappedBy = "personalInfo")
     private Patient person;
 
     public Patient getPerson() {
@@ -20,7 +19,7 @@ public class Personal_patient_info {
 
     public void setPerson(Patient person) {
         this.person = person;
-    }
+    }*/
 
     @Column(name = "patient_firstname")
     private String firstName;
@@ -28,14 +27,15 @@ public class Personal_patient_info {
     @Column(name = "patient_lastname")
     private String lastName;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "personalInfo")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address addressData;
 
     //ЕГН
     @Column(name = "egn_person_id")
-    private Integer verificationCode;
+    private String verificationCode;
 
-    public Personal_patient_info(String firstName, String lastName, Address address, Integer verificationCode) {
+    public Personal_patient_info(String firstName, String lastName, Address address, String verificationCode) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.addressData = address;
@@ -66,11 +66,11 @@ public class Personal_patient_info {
         this.addressData = address;
     }
 
-    public Integer getVerificationCode() {
+    public String getVerificationCode() {
         return verificationCode;
     }
 
-    public void setVerificationCode(Integer verificationCode) {
+    public void setVerificationCode(String verificationCode) {
         this.verificationCode = verificationCode;
     }
 
