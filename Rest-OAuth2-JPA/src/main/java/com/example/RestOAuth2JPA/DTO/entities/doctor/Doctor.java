@@ -26,7 +26,8 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "person")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "personal_info_id", referencedColumnName = "id")
     private Personal_doctor_info personalInfo;
 
     //отделение пример: ортопедия
@@ -36,8 +37,7 @@ public class Doctor {
     @Column(name = "position_name", nullable = false)
     private String positionName;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "doctor")
     private User user;
 
 
