@@ -93,9 +93,8 @@ public class SecurityConfiguration{
                     .authorizeRequests().requestMatchers("/authenticate").permitAll()
                     .requestMatchers("/user/register").permitAll()
                     .requestMatchers("/admin/register").permitAll()
-                    .requestMatchers("/patients").permitAll()
-                    .requestMatchers("/home").hasAuthority("USER")
-                    .anyRequest().authenticated()
+                    .requestMatchers("/api/v1/roles").anonymous()
+                    .anyRequest().permitAll()
                     //.and().formLogin().loginPage("/login").loginProcessingUrl("/authenticate").permitAll()
                     .and().logout().logoutSuccessUrl("/login").permitAll()
                     .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
