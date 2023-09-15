@@ -10,9 +10,8 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "personalData_id", referencedColumnName = "id")
-    private Personal_patient_info personalInfo;
+    /*@OneToOne(cascade = CascadeType.ALL, mappedBy = "addressData")
+    private Personal_patient_info personalInfo;*/
 
     private String street;
 
@@ -28,13 +27,13 @@ public class Address {
         this.postCode = postCode;
     }
 
-    public Personal_patient_info getPersonalInfo() {
+    /*public Personal_patient_info getPersonalInfo() {
         return personalInfo;
     }
 
     public void setPersonalInfo(Personal_patient_info personalInfo) {
         this.personalInfo = personalInfo;
-    }
+    }*/
 
     public String getStreet() {
         return street;
