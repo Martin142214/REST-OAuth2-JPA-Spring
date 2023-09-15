@@ -1,6 +1,7 @@
 package com.example.RestOAuth2JPA.DTO.entities.auth;
 
 import com.example.RestOAuth2JPA.DTO.entities.FileDB;
+import com.example.RestOAuth2JPA.DTO.entities.doctor.Doctor;
 import com.example.RestOAuth2JPA.DTO.entities.patient.Patient;
 
 import jakarta.persistence.*;
@@ -35,8 +36,32 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
+    private Doctor doctor;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "patient_id", referencedColumnName = "id")
+    private Patient patient;
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id")
     private FileDB profileImage;
     
     public User(String username, String password, String email, 
