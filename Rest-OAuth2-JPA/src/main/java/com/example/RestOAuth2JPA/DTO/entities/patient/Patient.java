@@ -32,8 +32,8 @@ public class Patient implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "person")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "personal_info_id", referencedColumnName = "id")
     private Personal_patient_info personalInfo;
 
     @Enumerated(EnumType.STRING)
@@ -42,14 +42,12 @@ public class Patient implements Serializable {
 
     //many patients belong to one doctor
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-
+    /*@OneToOne(cascade = CascadeType.ALL, mappedBy = "patient")
+    private User user;*/
 
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "patient")
@@ -104,11 +102,11 @@ public class Patient implements Serializable {
         this.notes = notes;
     }
     
-    public User getUser() {
+    /*public User getUser() {
         return user;
     }
     
     public void setUser(User user) {
         this.user = user;
-    }
+    }*/
 }
