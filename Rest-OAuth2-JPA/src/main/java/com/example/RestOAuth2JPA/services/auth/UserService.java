@@ -1,5 +1,7 @@
 package com.example.RestOAuth2JPA.services.auth;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,10 @@ public class UserService {
 
     public void save_new_user(User user) {
         _usersRepository.save(user);
+    }
+
+    public List<User> get_all_users() {
+        return _usersRepository.findAll();
     }
 
     public boolean emailExist(String email){
