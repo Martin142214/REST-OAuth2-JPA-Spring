@@ -10,8 +10,7 @@ public class Personal_doctor_info {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "personalInfo")
     private Doctor person;
 
     @Column(name = "firstname")
