@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.example.RestOAuth2JPA.DTO.classModels.AuthenticationResponse;
+import com.example.RestOAuth2JPA.DTO.classModels.auth.User_login;
 import com.example.RestOAuth2JPA.DTO.entities.FileDB;
 import com.example.RestOAuth2JPA.DTO.entities.auth.Privilege;
 import com.example.RestOAuth2JPA.DTO.entities.auth.Role;
@@ -195,6 +196,12 @@ public class LoginController {
         }
         
         return redirectView("http://localhost:8080/patients");
+    }
+
+    @RequestMapping(value = "/user/register", method = RequestMethod.POST)
+    public RedirectView login_user(@ModelAttribute User_login user) {
+        //TODO Implement user login func
+        //Return redirect after successful login
     }
 
     public RedirectView redirectView(String url){
