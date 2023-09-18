@@ -1,6 +1,7 @@
 package com.example.RestOAuth2JPA.services.auth;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,8 +35,8 @@ public class UserService {
     }
 
     public boolean usernameExist(String username){
-        User user = _usersRepository.findByUsername(username);
-        if (user != null) {
+        Optional<User> user = _usersRepository.findByUsername(username);
+        if (user.isPresent()) {
             return true;
         }
         return false;
