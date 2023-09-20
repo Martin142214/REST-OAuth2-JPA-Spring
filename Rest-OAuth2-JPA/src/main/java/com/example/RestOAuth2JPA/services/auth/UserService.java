@@ -35,8 +35,8 @@ public class UserService {
     }
 
     public boolean usernameExist(String username){
-        Optional<User> user = _usersRepository.findByUsername(username);
-        if (user.isPresent()) {
+        User user = _usersRepository.findByUsername(username);
+        if (user != null) {
             return true;
         }
         return false;
