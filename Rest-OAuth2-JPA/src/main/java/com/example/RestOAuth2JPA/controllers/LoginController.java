@@ -48,8 +48,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 public class LoginController {
 
-    @Autowired
-    private AuthService _authService;
+    //@Autowired AuthService _authService;
 
     @Autowired UserService userService;
     
@@ -67,8 +66,9 @@ public class LoginController {
 
     @Autowired PasswordEncoder passwordEncoder;
 
-    public LoginController() {
-        
+    @Autowired
+    public LoginController(UserService userService) {
+        this.userService = userService;
     }
     
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -198,8 +198,9 @@ public class LoginController {
         return redirectView("http://localhost:8080/patients");
     }
 
-    @RequestMapping(value = "/user/register", method = RequestMethod.POST)
-    public RedirectView login_user(@ModelAttribute User_login user) {
+    @RequestMapping(value = "/user/login", method = RequestMethod.GET)
+    public String login_user() {
+        return "/auth/login_user.html";
         //TODO Implement user login func
         //Return redirect after successful login
     }
