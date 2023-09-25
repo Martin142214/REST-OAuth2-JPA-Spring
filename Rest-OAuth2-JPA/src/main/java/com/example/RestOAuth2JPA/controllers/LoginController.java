@@ -127,7 +127,7 @@ public class LoginController {
         fileDBRepository.save(userImageFile);
         this.userService.save_new_user(user);
 
-        return redirectView("http://localhost:8080/user/register");
+        return userService.redirectView("http://localhost:8080/user/register");
     }
 
     @RequestMapping(value = "/user/register", method = RequestMethod.GET)
@@ -195,7 +195,7 @@ public class LoginController {
             throw new Error(e.getMessage());
         }
         
-        return redirectView("http://localhost:8080/patients");
+        return userService.redirectView("http://localhost:8080/patients");
     }
 
     @RequestMapping(value = "/user/login", method = RequestMethod.GET)
@@ -205,9 +205,5 @@ public class LoginController {
         //Return redirect after successful login
     }
 
-    public RedirectView redirectView(String url){
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl(url);
-        return redirectView;
-    }
+    
 }
