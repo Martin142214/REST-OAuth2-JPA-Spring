@@ -81,6 +81,10 @@ public class User {
     public User() {
         
     }
+
+    public User(String username) {
+        this.username = username;
+    }
     
     /*@ManyToMany 
     @JoinTable( 
