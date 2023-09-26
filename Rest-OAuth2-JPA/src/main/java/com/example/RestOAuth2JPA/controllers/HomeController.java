@@ -20,6 +20,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.example.RestOAuth2JPA.DTO.entities.auth.User;
 import com.example.RestOAuth2JPA.components.mappers.GrantedAuthoritiesMapper;
 import com.example.RestOAuth2JPA.enums.Roles;
+import com.example.RestOAuth2JPA.services.additional.RedirectHandler;
 import com.example.RestOAuth2JPA.services.auth.UserService;
 
 @Controller
@@ -27,11 +28,7 @@ public class HomeController {
 
     @Autowired UserService userService;
 
-    private final String adminProfileUrl = "http://localhost:8080/user/admin/profile";
-
-    private final String doctorProfileUrl = "http://localhost:8080/user/doctor/profile";
-
-    private final String patientProfileUrl = "http://localhost:8080/user/patient/profile";
+    @Autowired RedirectHandler redirectHandler;
 
     @Autowired
     public HomeController() {
@@ -43,7 +40,7 @@ public class HomeController {
         return "index.html";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user/checkPath")
     public RedirectView users_url_handler_endpoint(){
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         try {
@@ -54,7 +51,9 @@ public class HomeController {
             // TODO: handle exception
         }
 
-        try {
+        return redirectHandler.redirectView(redirectHandler.redirect_user_handler(authentication));
+
+        /*try {
             if (GrantedAuthoritiesMapper.get_authorities_info(authentication)
                                         .get("role_authorities").toString()
                                         .equals(Roles.ROLE_ADMIN.name().toString())) {
@@ -78,7 +77,7 @@ public class HomeController {
             }   
         } catch (Exception e) { 
             return userService.redirectView("http://localhost:8080/user/login");
-        }
+        }*/
         
 
         /*switch () {
