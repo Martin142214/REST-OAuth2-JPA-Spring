@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -17,6 +20,22 @@ public class UserService {
 
     public UserService() {
         
+    }
+
+    private boolean authenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        return authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
+    }
+
+    public User get_currently_loggedInUser() {
+
+        if (authenticated()) {
+            return _usersRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        }
+        else {
+            return new User();
+        }
     }
 
     public void save_new_user(User user) {
@@ -41,11 +60,5 @@ public class UserService {
             return true;
         }
         return false;
-    }
-
-    public RedirectView redirectView(String url){
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl(url);
-        return redirectView;
     }
 }
