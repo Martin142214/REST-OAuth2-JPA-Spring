@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.example.RestOAuth2JPA.DTO.classModels.AuthToken;
 import com.example.RestOAuth2JPA.DTO.repositories.auth.IUsersRepository;
@@ -31,6 +32,7 @@ import com.example.RestOAuth2JPA.services.userDetails.UserDetailsServiceImplemen
 
 @Configuration
 @EnableJpaRepositories
+@EnableWebMvc
 @ConfigurationProperties(prefix = "auth")
 @EnableTransactionManagement
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -93,11 +95,11 @@ public class SecurityConfiguration{
         http.csrf().disable()
                     .authorizeRequests().requestMatchers("/authenticate").permitAll()
                     .requestMatchers("/user/register").permitAll()
-                    .requestMatchers("/admin/register").permitAll()
-                    .requestMatchers("/user/login").permitAll()
-                    .requestMatchers("/api/v1/roles").anonymous()
+                    //.requestMatchers("/admin/register").permitAll()
+                    //.requestMatchers("/user/login").permitAll()
+                    //.requestMatchers("/api/v1/roles").anonymous()
                     .anyRequest().permitAll()
-                    .and().formLogin().loginPage("/user/login").defaultSuccessUrl("/patients").permitAll()
+                    .and().formLogin().loginPage("/user/login").defaultSuccessUrl("/user/checkPath").permitAll()
                     .and().logout().logoutSuccessUrl("/user/login").permitAll();
         //http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
                 
