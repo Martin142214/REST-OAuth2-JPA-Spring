@@ -44,6 +44,10 @@ public class User {
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id")
+    private FileDB profileImage;
+    
     public Doctor getDoctor() {
         return doctor;
     }
@@ -60,9 +64,6 @@ public class User {
         this.patient = patient;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id")
-    private FileDB profileImage;
     
     public User(String username, String password, String email, 
                 Role role, Patient patient, boolean isEnabled, 

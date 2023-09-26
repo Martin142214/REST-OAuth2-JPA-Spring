@@ -36,6 +36,7 @@ import com.example.RestOAuth2JPA.DTO.repositories.secondary.IAddressRepository;
 import com.example.RestOAuth2JPA.DTO.repositories.secondary.IFileDBRepository;
 import com.example.RestOAuth2JPA.DTO.repositories.secondary.IPersonalInfoRepository;
 import com.example.RestOAuth2JPA.enums.Status;
+import com.example.RestOAuth2JPA.services.additional.RedirectHandler;
 import com.example.RestOAuth2JPA.services.auth.AuthService;
 import com.example.RestOAuth2JPA.services.auth.PrivilegeService;
 import com.example.RestOAuth2JPA.services.auth.RoleService;
@@ -55,6 +56,8 @@ public class LoginController {
     @Autowired RoleService roleService;
     
     @Autowired PrivilegeService privilegeService;
+
+    @Autowired RedirectHandler redirectHandler;
     
     @Autowired IPatientRepository patientRepository;
 
@@ -127,7 +130,7 @@ public class LoginController {
         fileDBRepository.save(userImageFile);
         this.userService.save_new_user(user);
 
-        return userService.redirectView("http://localhost:8080/user/register");
+        return redirectHandler.redirectView("http://localhost:8080/user/register");
     }
 
     @RequestMapping(value = "/user/register", method = RequestMethod.GET)
@@ -195,7 +198,7 @@ public class LoginController {
             throw new Error(e.getMessage());
         }
         
-        return userService.redirectView("http://localhost:8080/patients");
+        return redirectHandler.redirectView("http://localhost:8080/patients");
     }
 
     @RequestMapping(value = "/user/login", method = RequestMethod.GET)
