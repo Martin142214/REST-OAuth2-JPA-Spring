@@ -29,8 +29,8 @@ public class FileDB {
     @Column(name = "imagePath", nullable = false)
     public String imagePath; 
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "profileImage")
-    private User user;
+    //@OneToOne(fetch = FetchType.LAZY, mappedBy = "profileImage")
+    //private User user;
 
     public FileDB() {
     }
