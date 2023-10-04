@@ -1,0 +1,53 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Spring Security Example My </title>
+        <link rel="stylesheet" type="text/css" href="/css/auth/registration_form.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <script src="https://kit.fontawesome.com/5a3814d3c5.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <h1 style="text-align: center; border: 5px solid black; padding: 10px">Login form</h1>
+        <a th:href="@{/home}" style="font-size: 20px; text-decoration: none; padding: 0 5px"><i class="fa fa-arrow-left fa-sm"></i> Go to main page</a>
+            <div class="imgcontainer" style="text-align: center;">
+                <img src="/images/user.png" alt="Avatar" class="avatar">
+            </div>
+            <div class="w3-container w3-half w3-margin-top">
+
+                <form id="regForm" class="w3-container w3-card-4" th:action="@{/user/login}" method="post" enctype="multipart/form-data">
+                        <!-- starts here -->
+        
+                            <!-- One "tab" for each step in the form: -->
+                            <!--<div class="tab">Name:
+                              <p><input type="text" placeholder="First name..." oninput="this.className = ''" name="firstName"></p>
+                              <p><input type="text" placeholder="Last name..." oninput="this.className = ''" name="lname"></p>
+                            </div>-->
+        
+                            <div class="tab" style="display: block;">
+
+                                <label>Username*</label>
+                                <p><input type="text" placeholder="user1" oninput="this.className = ''" name="username" required/></p>
+                
+                                <label>Password*</label>
+                                <p><input type="password" placeholder="*****" oninput="this.className = ''" name="password" required/></p>
+                
+                            </div>
+
+                            <div style="overflow:auto;">
+                                <div style="float:right;">
+                                    <button type="submit" id="nextBtn">Login</button>
+                                </div>
+                            </div>
+
+                            <div th:if="${param.error}">
+                                <h3 style="color: red; text-align: center;">Invalid username and password.</h3>
+                            </div>
+                            <div th:if="${param.logout}">
+                                <h3 style="color: red; text-align: center;">You have been logged out.</h3>
+                            </div>
+
+                </form>
+            </div>
+    </body>
+</html>
