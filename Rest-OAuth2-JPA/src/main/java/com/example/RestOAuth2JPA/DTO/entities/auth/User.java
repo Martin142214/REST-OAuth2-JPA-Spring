@@ -45,9 +45,9 @@ public class User {
     private Patient patient;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id")
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
     private FileDB profileImage;
-    
+
     public Doctor getDoctor() {
         return doctor;
     }
@@ -85,6 +85,11 @@ public class User {
 
     public User(String username) {
         this.username = username;
+    }
+
+    public User(String username, String email) {
+        this.username = username;
+        this.email = email;
     }
     
     /*@ManyToMany 
