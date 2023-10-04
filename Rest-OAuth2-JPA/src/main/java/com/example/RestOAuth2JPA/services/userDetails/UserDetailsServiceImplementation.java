@@ -17,13 +17,11 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
 
     @Autowired IUsersRepository usersRepository;
 
-    @Autowired UserService userService;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         
             CustomUserDetails userDetails = new CustomUserDetails(username, usersRepository);
-
+            
             org.springframework.security.core.userdetails.User loggedInUser = new org.springframework.security.core.userdetails.User(
                 userDetails.getUsername(), 
                 userDetails.getPassword(), 
@@ -33,6 +31,7 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
             return loggedInUser;
     }
 
+}
     /* 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -50,6 +49,7 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
         newAuthorities.add(userAuthority);
         return newAuthorities;
     }
+
     */
     
-}
+
