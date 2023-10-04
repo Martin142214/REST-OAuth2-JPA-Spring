@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,19 +25,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import com.example.RestOAuth2JPA.DTO.classModels.AuthToken;
 import com.example.RestOAuth2JPA.DTO.repositories.auth.IUsersRepository;
+import com.example.RestOAuth2JPA.components.classModels.AuthToken;
 import com.example.RestOAuth2JPA.services.userDetails.CustomUserDetails;
 import com.example.RestOAuth2JPA.services.userDetails.UserDetailsServiceImplementation;
 
 
 @Configuration
+@EnableWebSecurity
 @EnableJpaRepositories
-@EnableWebMvc
-@ConfigurationProperties(prefix = "auth")
+//@ConfigurationProperties(prefix = "auth")
 @EnableTransactionManagement
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-@EnableWebSecurity
 public class SecurityConfiguration{
 
     //@Autowired
@@ -59,9 +59,9 @@ public class SecurityConfiguration{
     
 
     
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    /*protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserDetailsServiceImplementation);
-    }
+    }*/
     
 
     /*@Bean
@@ -89,18 +89,21 @@ public class SecurityConfiguration{
                 .tokenValiditySeconds(30 * 6)
                 .rememberMeCookieName("auth")
                 .key(authToken.getSecret_key())
-                .and().csrf().disable();
+                .and().csrf().disable();*/
 
-        return http.build();*/
+        http.sessionManagement(session -> session.maximumSessions(1).maxSessionsPreventsLogin(true));
         http.csrf().disable()
-                    .authorizeRequests().requestMatchers("/authenticate").permitAll()
+                    .authorizeRequests()
                     .requestMatchers("/user/register").permitAll()
-                    //.requestMatchers("/admin/register").permitAll()
-                    //.requestMatchers("/user/login").permitAll()
+                    .requestMatchers("/admin/register").permitAll()
+                    .requestMatchers("/scripts/**").permitAll()
+                    .requestMatchers("/css/**").permitAll()
+                    .requestMatchers("/images/**").permitAll()
+                    //.requestMatchers("/user/register/second").permitAll()
                     //.requestMatchers("/api/v1/roles").anonymous()
-                    .anyRequest().permitAll()
+                    .anyRequest().authenticated()
                     .and().formLogin().loginPage("/user/login").defaultSuccessUrl("/user/checkPath").permitAll()
-                    .and().logout().logoutSuccessUrl("/user/login").permitAll();
+                    .and().logout().logoutSuccessUrl("/user/login").deleteCookies("JSESSIONID");
         //http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
                 
 
