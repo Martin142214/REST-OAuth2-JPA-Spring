@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 import com.example.RestOAuth2JPA.DTO.entities.Note;
+import com.example.RestOAuth2JPA.DTO.entities.Personal_info;
 import com.example.RestOAuth2JPA.DTO.entities.auth.User;
 import com.example.RestOAuth2JPA.DTO.entities.doctor.Doctor;
 import com.example.RestOAuth2JPA.enums.Status;
@@ -34,7 +35,7 @@ public class Patient implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "personal_info_id", referencedColumnName = "id")
-    private Personal_patient_info personalInfo;
+    private Personal_info personalInfo;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "patient_status")
@@ -53,7 +54,7 @@ public class Patient implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "patient")
     private Collection<Note> notes;
 
-    public Patient(Personal_patient_info personalInfo, Status status) {
+    public Patient(Personal_info personalInfo, Status status) {
         this.personalInfo = personalInfo;
         this.status = status;
     }
@@ -70,11 +71,11 @@ public class Patient implements Serializable {
         this.id = id;
     }
     
-    public Personal_patient_info getPersonalInfo() {
+    public Personal_info getPersonalInfo() {
         return personalInfo;
     }
     
-    public void setPersonalInfo(Personal_patient_info personalInfo) {
+    public void setPersonalInfo(Personal_info personalInfo) {
         this.personalInfo = personalInfo;
     }
     

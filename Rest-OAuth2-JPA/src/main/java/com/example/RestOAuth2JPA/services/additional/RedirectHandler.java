@@ -39,7 +39,7 @@ public class RedirectHandler {
                 return "http://localhost:8080/user/login";
             }   
         } catch (Exception e) { 
-            return "http://localhost:8080/error";
+            return e.getMessage();
         }
     }
 

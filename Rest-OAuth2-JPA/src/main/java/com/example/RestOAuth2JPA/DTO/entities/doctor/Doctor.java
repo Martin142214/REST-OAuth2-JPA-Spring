@@ -3,6 +3,7 @@ package com.example.RestOAuth2JPA.DTO.entities.doctor;
 import java.util.Collection;
 import java.util.UUID;
 
+import com.example.RestOAuth2JPA.DTO.entities.Personal_info;
 import com.example.RestOAuth2JPA.DTO.entities.auth.User;
 import com.example.RestOAuth2JPA.DTO.entities.patient.Patient;
 
@@ -28,7 +29,7 @@ public class Doctor {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "personal_info_id", referencedColumnName = "id")
-    private Personal_doctor_info personalInfo;
+    private Personal_info personalInfo;
 
     //отделение пример: ортопедия
     @Column(name = "department", nullable = false)
@@ -37,18 +38,29 @@ public class Doctor {
     @Column(name = "position_name", nullable = false)
     private String positionName;
 
+    @Column(name = "account_confirm_code", nullable = false)
+    private String accountCode;
+
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "doctor")
     private User user;
-
-
+    
+    
     public Doctor() {  }
-
-    public Doctor(Personal_doctor_info personalInfo, String department, String positionName) {
+    
+    public Doctor(Personal_info personalInfo, String department, String positionName) {
         this.personalInfo = personalInfo;
         this.department = department;
         this.positionName = positionName;
     }
     
+    public String getAccountCode() {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode) {
+        this.accountCode = accountCode;
+    }
+
     public String getPositionName() {
         return positionName;
     }
@@ -57,11 +69,11 @@ public class Doctor {
         this.positionName = positionName;
     }
     
-    public Personal_doctor_info getPersonalInfo() {
+    public Personal_info getPersonalInfo() {
         return personalInfo;
     }
 
-    public void setPersonalInfo(Personal_doctor_info personalInfo) {
+    public void setPersonalInfo(Personal_info personalInfo) {
         this.personalInfo = personalInfo;
     }
 
