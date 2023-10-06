@@ -10,11 +10,11 @@ import com.example.RestOAuth2JPA.enums.Roles;
 @Service
 public class RedirectHandler {
 
-    private final String adminProfileUrl = "http://localhost:8080/user/admin/profile";
+    public final String adminProfileUrl = "http://localhost:8080/user/admin/profile";
 
-    private final String doctorProfileUrl = "http://localhost:8080/user/doctor/profile";
+    public final String doctorProfileUrl = "http://localhost:8080/user/doctor/profile";
 
-    private final String patientProfileUrl = "http://localhost:8080/user/patient/profile";
+    public final String patientProfileUrl = "http://localhost:8080/user/patient/profile";
 
 
     public RedirectHandler() {
