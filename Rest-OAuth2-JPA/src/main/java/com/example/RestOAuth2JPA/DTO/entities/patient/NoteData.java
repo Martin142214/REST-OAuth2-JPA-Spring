@@ -4,6 +4,7 @@ import com.example.RestOAuth2JPA.DTO.entities.Note;
 import com.example.RestOAuth2JPA.enums.PlaceOfTreatment;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -27,12 +28,12 @@ public class NoteData {
     @JoinColumn(name = "note_id", referencedColumnName = "id")
     private Note note;
 
-    @Transient
+    @Column(name = "patient_diagnosis")
     private String diagnosis;
 
     @Enumerated(EnumType.STRING)
     private PlaceOfTreatment placeOfTreatment;
 
-    @Transient
+    @Column(name = "description")
     private String description;
 }
