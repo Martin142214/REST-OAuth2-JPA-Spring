@@ -19,8 +19,13 @@ public class FileUploadUtils {
         String newFileDirectoryName = FileUploadUtils.concatenate("profile", "-", username.toLowerCase());
         File newFileDirectory = new File(imagesPath, newFileDirectoryName);
 
+        
         FileDB fileDB = new FileDB();
         try {
+            
+            Path pathToNewDirectory = Paths.get(imagesPath, "/", newFileDirectoryName);
+            Files.deleteIfExists(pathToNewDirectory);
+
             if(newFileDirectory.mkdir()){
                 String userImageName = StringUtils.cleanPath(userImage.getOriginalFilename());
     
