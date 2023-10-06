@@ -36,10 +36,11 @@ public class Personal_info {
     @Column(name = "phone", nullable = true)
     private String phoneNumber;
 
+    
     //ЕГН
     @Column(name = "egn_person_id")
     private String verificationCode;
-
+    
     public Personal_info(String firstName, String lastName, String phoneNumber, Address address, String verificationCode) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -47,11 +48,27 @@ public class Personal_info {
         this.addressData = address;
         this.verificationCode = verificationCode;
     }
-
+    
     public Personal_info() {
         
     }
+    
+    public Address getAddressData() {
+        return addressData;
+    }
 
+    public void setAddressData(Address addressData) {
+        this.addressData = addressData;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+    
     public String getFirstName() {
         return firstName;
     }
