@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <head>
+        <title>Patients list</title>
+    </head>
+    <body>
+        <h1>Patients list</h1>
+        <div class="row">
+            <h4 th:if="${hasNoPatients}" id="noResults">No matches found!</h4>
+            <div th:unless="${hasNoPatients}" th:each="userPatient : ${doctorPatients}" class="col-12 col-md-3 mt-5 mb-4" style="align-items: stretch;">
+                <a th:href="@{|/user/patient/profile/${userPatient.id}|}">
+                <div class="card">
+                    <div class="card-header">
+                        <img th:src="${userPatient.profileImage.imagePath}" alt="image for user" style="float: right">
+                    </div>
+                    <div class="card-body">
+                        <p th:text="${userPatient.patient.personalInfo.firstName + ' ' + userPatient.patient.personalInfo.lastName}"></p>
+                        <p class="card-text" >Status: <b th:text="${userPatient.patient.status}"></b></p>
+                        <p class="card-text">Count of notes: <b>14</b></p>
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+    </body>
+</html>
