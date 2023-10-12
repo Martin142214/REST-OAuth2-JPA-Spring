@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="/scripts/user_patient/patient_profile_page.js"></script>
     <head>
         <title>Hello World!</title>
     </head>
-    <body>
+    <body onload="setColorToPatientStatus()">
       <h1>Patient profile page</h1>
         <section style="background-color: #eee;">
             <div class="container py-5">
@@ -16,8 +17,6 @@
                 <div class="col">
                   <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
-                      <li class="breadcrumb-item"><a href="#">Home</a></li>
-                      <li class="breadcrumb-item"><a href="#">User</a></li>
                       <li class="breadcrumb-item active" aria-current="page">User Profile</li>
                     </ol>
                   </nav>
@@ -31,38 +30,15 @@
                       <img th:src="${userPatient.profileImage.imagePath}" alt="avatar"
                         class="rounded-circle img-fluid" style="width: 150px;">
                       <h5 class="my-3" th:text="${userPatient.getUsername()}"></h5>
-                      <p class="text-muted mb-1" th:text="${'status: ' + userPatient.patient.status}"></p>
-                      <p class="text-muted mb-4" th:text="${userPatient.patient.personalInfo.getAddress().postCode + ' ' +
-                                                            userPatient.patient.personalInfo.getAddress().street + ' ' + 
-                                                            userPatient.patient.personalInfo.getAddress().city}"></p>
-                      <div class="d-flex justify-content-center mb-2">
-                        <button type="button" class="btn btn-primary">Follow</button>
-                        <button type="button" class="btn btn-outline-primary ms-1">Message</button>
-                      </div>
+                      <p class="text-muted mb-1" th:text="${userPatient.patient.personalInfo.firstName + ' ' + userPatient.patient.personalInfo.lastName}"></p>
                     </div>
                   </div>
                   <div class="card mb-4 mb-lg-0">
                     <div class="card-body p-0">
                       <ul class="list-group list-group-flush rounded-3">
                         <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                          <i class="fas fa-globe fa-lg text-warning"></i>
-                          <p class="mb-0">https://mdbootstrap.com</p>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                          <i class="fab fa-github fa-lg" style="color: #333333;"></i>
-                          <p class="mb-0">mdbootstrap</p>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                          <i class="fab fa-twitter fa-lg" style="color: #55acee;"></i>
-                          <p class="mb-0">@mdbootstrap</p>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                          <i class="fab fa-instagram fa-lg" style="color: #ac2bac;"></i>
-                          <p class="mb-0">mdbootstrap</p>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                          <i class="fab fa-facebook-f fa-lg" style="color: #3b5998;"></i>
-                          <p class="mb-0">mdbootstrap</p>
+                          <a th:href="@{/logout}" style="font-size:20px; width: 45%;" class="btn btn-danger">Logout <i class="fa fa-close"></i></a>
+                          <button style="font-size:20px; width: 45%;" class="btn btn-outline-primary">Edit <i class="fa fa-pencil"></i></button>
                         </li>
                       </ul>
                     </div>
@@ -104,8 +80,8 @@
                         </div>
                         <div class="col-sm-9">
                           <p class="text-muted mb-0" th:text="${userPatient.patient.personalInfo.getAddress().postCode + ' ' +
-                          userPatient.patient.personalInfo.getAddress().street + ' ' + 
-                          userPatient.patient.personalInfo.getAddress().city}"></p>
+                                                                userPatient.patient.personalInfo.getAddress().street + ' ' + 
+                                                                userPatient.patient.personalInfo.getAddress().city}"></p>
                         </div>
                       </div>
                     </div>
@@ -116,36 +92,34 @@
                         <div class="card-body">
                           <ul class="list-group list-group-flush rounded-3">
                             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                              <span>Full Name</span>
-                              <p class="mb-0">https://mdbootstrap.com</p>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                              <span>Phone Number</span>
-                              <p class="mb-0">mdbootstrap</p>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                              <span>Department (Отделение)</span>
-                              <p class="mb-0">@mdbootstrap</p>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                              <span>Position</span>
-                              <p class="mb-0">mdbootstrap</p>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                              <span>Notes</span>
-                              <a href="#" class="mb-0">See</a>
+                              <span>Current health status:</span>
+                              <p class="mb-0" id="patientStatus" th:text="${userPatient.patient.status}"></p>
                             </li>
                           </ul>
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" th:if="${patientHasDoctor}">
+                      <div class="card mb-4 mb-md-0">
+                          <div class="card-body text-center">
+                            <img th:src="${patientDoctor.profileImage.imagePath}" alt="avatar"
+                              class="rounded-circle img-fluid" style="width: 150px;">
+                            <h5 class="my-3" th:text="${patientDoctor.doctor.personalInfo.firstName + ' ' + patientDoctor.doctor.personalInfo.lastName}"></h5>
+                            <p class="text-muted mb-1" th:text="${'position: ' + patientDoctor.doctor.positionName}"></p>
+                            <div class="d-flex justify-content-center mb-2">
+                              <button type="button" class="btn btn-outline-primary">View notes</button>
+                              <button type="button" class="btn btn-danger ms-1">Cancel healing</button>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6" th:unless="${patientHasDoctor}">
                       <div class="card mb-4 mb-md-0">
                         <div class="card-body">
                           <label for="cars">Choose a doctor:</label>
 
                           <select class="form-control" name="doctor" id="doctors" title="doctorsSelect" onchange="redirectSelect(this)">
-                            <option disabled>Select a doctor</option>
+                            <option selected disabled>Select a doctor</option>
                             <option th:each="doctorUser : ${doctorUsers}" th:value="@{|/user/doctor/profile/${doctorUser.key}|}" 
                                     th:text="${doctorUser.value}"></option>
                             <option value="#">Valeri halvadjian, ortopediq i travmatologiq</option>
@@ -153,6 +127,7 @@
                         </div>
                       </div>
                     </div>
+
                   </div>
                 </div>
               </div>
