@@ -38,11 +38,9 @@ public class Doctor {
     @Column(name = "position_name", nullable = false)
     private String positionName;
 
-    @Column(name = "account_confirm_code", nullable = false)
-    private String accountCode;
-
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "doctor")
     private User user;
+    
     
     
     public Doctor() {  }
@@ -53,14 +51,14 @@ public class Doctor {
         this.positionName = positionName;
     }
     
-    public String getAccountCode() {
-        return accountCode;
+    public User getUser() {
+        return user;
     }
 
-    public void setAccountCode(String accountCode) {
-        this.accountCode = accountCode;
+    public void setUser(User user) {
+        this.user = user;
     }
-
+    
     public String getPositionName() {
         return positionName;
     }
@@ -104,4 +102,12 @@ public class Doctor {
     //one doctor has many patients;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
     private Collection<Patient> patients;
+
+    public void addPatient(Patient patient) {
+        this.patients.add(patient);
+    }
+
+    public void removePatient(Patient patient) {
+        this.patients.remove(patient);
+    }
 }
