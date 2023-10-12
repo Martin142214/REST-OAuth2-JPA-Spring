@@ -1,0 +1,96 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="/css/doctor/doctor_healRequests.css">
+    <title>Cars</title>
+</head>
+<style>
+    .disabled{
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    .selected {
+        background-color: green;
+    }
+</style>
+<body>
+
+    <section>
+        <div class="container py-5">
+            <h1>Daily requests</h1>
+            <h2 th:if="${hasNoRequests}">No requests at the moment</h2>
+            <div class="row">
+                <div class="col">
+                  <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                    <ol class="breadcrumb mb-0">
+                      <li class="breadcrumb-item"><a href="/user/doctor/profile">My Profile</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">Requests</li>
+                    </ol>
+                  </nav>
+                </div>
+              </div>
+
+            <table>
+                <tr>
+                  <th>Username</th>
+                  <th>Patient full name</th>
+                  <th>Reason</th>
+                  <th>Date</th>
+                  <th>Request status</th>
+                  <th>Response</th>
+                </tr>
+                <tr th:each="request : ${healRequests}" th:classappend="${request.id == selectedHealRequestId}?selected">
+                  <td th:text="${request.patient.username}"></td>
+                  <td th:text="${request.patient.getPatient().personalInfo.firstName + ' ' + request.patient.getPatient().personalInfo.lastName}"></td>
+                  <td th:text="${request.requestReason} ?: 'No reason mentioned'"></td>
+                  <td th:text="${request.requestDate}"></td>
+                  <td th:text="${request.requestStatus}"></td>
+                  <td>
+                    <div class="w3-dropdown-hover" th:classappend="${#strings.toLowerCase(request.requestStatus) != 'pending'}?disabled">
+                        <button class="w3-button w3-black">Response</button>
+                        <form th:action="@{|/user/doctor/${request.id}/response|}" method="post">
+                            <input type="hidden" name="patientId" th:value="${request.patient.id}">
+                            <div class="w3-dropdown-content w3-bar-block w3-border">
+                            <input type="submit" name="status" th:value="${T(com.example.RestOAuth2JPA.enums.HealRequestStatus).Approved}" 
+                                        class="w3-bar-item w3-button"/>
+                            <input type="submit" name="status" th:value="${T(com.example.RestOAuth2JPA.enums.HealRequestStatus).Rejected}" 
+                                        class="w3-bar-item w3-button"/>
+                            </div>
+                        </form>
+                      </div>
+                  </td>
+                </tr>
+            </table>
+        
+            <div class="col-12 col-md-2 mt-5 mb-4" th:each="request : ${healRequests}">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Patient name</h4>
+                    </div>
+                    <div class="card-body" style="display: inline">
+                        <div class="card-text">
+                            <p></p>
+                        </div> 
+                        <p class="card-text">Request reason</p>
+                        <p class="card-text">Request date</p>
+                    </div>
+                    <div class="card-footer">
+                        button for confirm
+                        button for cancel
+                        status of the request
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+<!--<div th:replace="/footer/footer.html :: footer"></div>-->
+
+<script src="/scripts/sneakers_cards_align.js"></script>
+</body>
+</html>
