@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/css/modals/modal-container.css}">
+    <link rel="stylesheet" th:href="@{/css/modals/notes_list_modal_container.css}">
     <script src="/scripts/user_patient/patient_profile_page.js"></script>
+    <script src="/scripts/modals/note_modals.js"></script>
     <head>
         <title>Hello World!</title>
     </head>
-    <body>
+    <body onload="setColorToPatientStatus()">
         <h1>Patient access page</h1>
         <section style="background-color: #eee;">
             <div class="container py-5">
@@ -34,12 +37,24 @@
                       <p class="text-muted mb-1">Full Stack Developer</p>
                       <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
                       <div class="d-flex justify-content-center mb-2">
-                        <button type="button" class="btn btn-primary">Follow</button>
-                        <button type="button" class="btn btn-outline-primary ms-1">Message</button>
+                        <div>
+                            <button type="button" class="btn btn-primary" th:onclick="openNoteAddModal([[${patientInfo.id}]], 
+                                                                                                       [[${patientInfo.patient.personalInfo.firstName}]], 
+                                                                                                       [[${patientInfo.patient.personalInfo.lastName}]],
+                                                                                                       [[${doctorUser.id}]], 
+                                                                                                       [[${patientInfo.profileImage.imagePath}]])">Add note</button>
+                            <div th:replace="/user_doctor/modals/create_note_modal_container.html"></div>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-outline-primary ms-1" th:onclick="openNotesListModal([[${patientFullName}]], [[${patientNotes}]])">See notes</button>
+                            <div th:replace="/user_doctor/modals/notes_list_modal_container.html"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+
+
                 <div class="col-lg-8">
                   <div class="card mb-4">
                     <div class="card-body">
@@ -91,6 +106,7 @@
                       </div>
                     </div>
                   </div>
+                </div>
 
                   <div class="col-md-6">
                     <div class="card mb-4 mb-md-0">
@@ -101,6 +117,20 @@
                             <p class="mb-0" id="patientStatus" th:text="${patientInfo.patient.status}"></p>
                           </li>
                         </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card mb-4 mb-md-0">
+                      <div class="card-body">
+                        <label for="cars">Set patient status</label>
+                        <form th:action="@{|/user/patient/profile/${patientInfo.id}/setStatus|}" method="POST">
+                            <select class="form-control" name="status" id="statuses" title="statusSelect" onchange="this.form.submit()">
+                                <option selected disabled>Status</option>
+                                <option th:each="status : ${T(com.example.RestOAuth2JPA.enums.Status).values()}" th:value="@{status}" 
+                                        th:text="${status}"></option>
+                            </select>
+                        </form>
                       </div>
                     </div>
                   </div>
