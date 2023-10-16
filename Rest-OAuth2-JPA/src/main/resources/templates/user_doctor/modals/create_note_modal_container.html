@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8" http-equiv="Content-Type" content="text/html;"/>
+    <title>Add notes modal</title>
+</head>
+<body>
+
+<div id="id01" class="modal">
+
+  <!-- Modal Content -->
+  <form class="modal-content animate" id="addNotesModalForm" method="post" enctype="multipart/form-data">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+    </div>
+
+    <div class="container">
+        <h3 id="patientNameTitle"></h3>
+        <div>
+            <img id="patientImage" alt="image for user" style="float: right; width: 200px;">
+        </div>
+        <br>
+        <div>
+            <label><b>Diagnosis</b></label>
+            <input type="text" class="form-control" placeholder="Diagnosis.." name="diagnosis" required>
+        </div>
+
+        <div>
+            <label><b>Description</b></label>
+            <input type="text" class="form-control" placeholder="Description.." name="description" required>
+        </div>
+
+        <div>
+            <label>Place to treat</label>
+            <select class="form-control" name="placeOfTreatment" title="placeOfTreatment">
+                <option id="treatmentOption" th:each="treatmentPlace : ${T(com.example.RestOAuth2JPA.enums.PlaceOfTreatment).values()}" th:text="${treatmentPlace}" th:value="${treatmentPlace}"></option>
+            </select>
+        </div>
+
+        <input type="hidden" name="doctorId" id="doctorIdInputHidden">
+
+    </div>
+    
+    <div class="container" style="background-color:#f1f1f1">
+        <button type="submit" class="button">Add</button>
+        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>
