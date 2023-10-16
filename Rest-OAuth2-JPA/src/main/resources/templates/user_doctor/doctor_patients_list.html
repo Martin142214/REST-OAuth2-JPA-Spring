@@ -9,23 +9,38 @@
         <title>Patients list</title>
     </head>
     <body>
-        <h1>Patients list</h1>
-        <div class="row">
-            <h4 th:if="${hasNoPatients}" id="noResults">No matches found!</h4>
-            <div th:unless="${hasNoPatients}" th:each="userPatient : ${doctorPatients}" class="col-12 col-md-3 mt-5 mb-4" style="align-items: stretch;">
-                <a th:href="@{|/user/patient/profile/${userPatient.id}|}">
-                <div class="card">
-                    <div class="card-header">
-                        <img th:src="${userPatient.profileImage.imagePath}" alt="image for user" style="float: right">
-                    </div>
-                    <div class="card-body">
-                        <p th:text="${userPatient.patient.personalInfo.firstName + ' ' + userPatient.patient.personalInfo.lastName}"></p>
-                        <p class="card-text" >Status: <b th:text="${userPatient.patient.status}"></b></p>
-                        <p class="card-text">Count of notes: <b>14</b></p>
+        <h1 style="text-align: center;">Patients list</h1>
+            <div class="container py-5">
+                <div class="row">
+                    <div class="col">
+                      <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="/user/doctor/profile">My Profile</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Patients</li>
+                          </ol>
+                      </nav>
                     </div>
                 </div>
-                </a>
+
+                <h4 th:if="${hasNoPatients}" id="noResults">No matches found!</h4>
+
+                <div th:unless="${hasNoPatients}" th:each="userPatient : ${doctorPatients}" class="col-12 col-md-3 mt-5 mb-4" style="align-items: stretch;">
+                    <a th:href="@{|/user/patient/profile/${userPatient.id}|}">
+                    <div class="card">
+                        <div class="card-header">
+                            <p th:text="${userPatient.patient.personalInfo.firstName + ' ' + userPatient.patient.personalInfo.lastName}"></p>
+                        </div>
+                        <div class="card-body">
+                            <img th:src="${userPatient.profileImage.imagePath}" alt="image for user" style="float: right; width: 100%;">
+                        </div>
+                        <div class="card-footer">
+                            <p class="card-text" >Status: <b th:text="${userPatient.patient.status}"></b></p>
+                            <p class="card-text">Count of notes: <b>14</b></p>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+
             </div>
-        </div>
     </body>
 </html>
