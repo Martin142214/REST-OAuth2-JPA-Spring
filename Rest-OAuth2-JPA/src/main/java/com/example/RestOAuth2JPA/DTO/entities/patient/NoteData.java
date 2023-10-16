@@ -24,9 +24,8 @@ public class NoteData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "note_id", referencedColumnName = "id")
-    private Note note;
+    /*@OneToOne(cascade = CascadeType.ALL, mappedBy = "data")
+    private Note note;*/
 
     @Column(name = "patient_diagnosis")
     private String diagnosis;
@@ -36,4 +35,38 @@ public class NoteData {
 
     @Column(name = "description")
     private String description;
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+
+    public PlaceOfTreatment getPlaceOfTreatment() {
+        return placeOfTreatment;
+    }
+
+    public void setPlaceOfTreatment(PlaceOfTreatment placeOfTreatment) {
+        this.placeOfTreatment = placeOfTreatment;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public NoteData() {
+        
+    }
+
+    public NoteData(String diagnosis, PlaceOfTreatment placeOfTreatment, String description) {
+        this.diagnosis = diagnosis;
+        this.placeOfTreatment = placeOfTreatment;
+        this.description = description;
+    }
 }
