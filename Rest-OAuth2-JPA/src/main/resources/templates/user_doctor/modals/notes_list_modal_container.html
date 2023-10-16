@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8" http-equiv="Content-Type" content="text/html;"/>
+    <title>Add notes modal</title>
+</head>
+<body>
+
+<div id="id02" class="modal">
+
+  <div class="modal-content animate">
+      <!-- Modal Content -->
+      <div class="imgcontainer">
+        <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
+      </div>
+    
+      <div class="container">
+        <h3 id="modalDivTitle"></h3>
+        <div id="modalDiv">
+              <!-- Dynamically render info in note_modals.js -->
+                  <!--<div class="notesContainer" th:each="note : ${patientNotes}">
+                      <form name="notesForm" th:action="@{|/user/patient/notes/delete/${note.id}|}" method="post">
+                          <input type="submit" class="time-right" value="&times;" style="cursor: pointer; border: none;"></input>
+                      </form>
+                      <span th:text="Up to date patient diagnosis: ${note.noteData.diagnosis}" style="font-size: 20px; font-weight: bold;"></span>
+                      <p th:text="${note.noteData.description}"></p>
+                      <span class="time-right">Date: ...</span>
+                  </div>-->
+          </div>
+      </div>
+  </div>
+
+</div>
+</body>
+</html>
