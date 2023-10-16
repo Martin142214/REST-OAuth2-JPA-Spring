@@ -1,10 +1,12 @@
 package com.example.RestOAuth2JPA.DTO.entities;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 import com.example.RestOAuth2JPA.DTO.entities.doctor.Doctor;
 import com.example.RestOAuth2JPA.DTO.entities.patient.NoteData;
 import com.example.RestOAuth2JPA.DTO.entities.patient.Patient;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 
@@ -17,20 +19,36 @@ public class Note implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id")
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 
     /*@JoinTable(name = "note_data",
                joinColumns = @JoinColumn(name = "note_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "noteData_id", referencedColumnName = "id")
                )*/
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "note")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "noteData_id", referencedColumnName = "id")
     private NoteData data;
+
+    /*@Column(name = "created_at", nullable = false)
+    private Date createdAt;*/
+
+    public Note() {
+        
+    }
+
+    public Note(Patient patient, Doctor doctor, NoteData noteData) {
+        this.patient = patient;
+        this.doctor = doctor;
+        this.data = noteData;
+    }
 
     public Long getId() {
         return id;
