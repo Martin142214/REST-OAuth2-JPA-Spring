@@ -48,12 +48,12 @@ public class DoctorUserController {
     @Secured("ROLE_DOCTOR")
     public ModelAndView doctor_profile_page() {
         ModelAndView modelAndView = new ModelAndView("user_doctor/doctor_profile_page.html");
-        User doctor = userService.get_currently_loggedInUser();
+        User doctor = userService.getCurrentlyLoggedInUser();
         if (doctor.isEnabled()) {
             modelAndView.addObject("userDoctor", doctor);
             List<HealRequest> allDoctorHealRequests = healRequestRepository.findAll().stream().limit(5).toList();
             modelAndView.addObject("doctorHealRequests", allDoctorHealRequests);
-            modelAndView.addObject("doctorPatients", userService.getAllPatientsForDoctor(doctor));       
+            modelAndView.addObject("doctorPatients", userService.getAllPatientsForUserDoctor(doctor));       
         }
         return modelAndView;
     }
@@ -61,7 +61,7 @@ public class DoctorUserController {
     @GetMapping("/requests")
     @Secured("ROLE_DOCTOR")
     public ModelAndView see_all_requests(@RequestParam(name = "healRequestId", required = false) Long healRequestId) {
-        User currentUser = userService.get_currently_loggedInUser();
+        User currentUser = userService.getCurrentlyLoggedInUser();
         //TODO Make the list to return only requests from today
         List<HealRequest> allDoctorHealRequests = healRequestRepository.findAll()
                                                                        .stream().filter(req -> req.getDoctor().getId().equals(currentUser.getId()))
@@ -77,40 +77,14 @@ public class DoctorUserController {
     @PostMapping("/{requestId}/response")
     @Secured("ROLE_DOCTOR")
     public RedirectView response_healRequest(@PathVariable Long requestId, Long patientId, HealRequestStatus status) {
-        User doctorUser = userService.get_currently_loggedInUser();
-        Optional<User> patientUser = userService.getUserById(patientId);
-        Optional<HealRequest> request = healRequestRepository.findById(requestId);
-        if (request.isPresent()) {
-            if (status.equals(HealRequestStatus.Approved) && patientUser.isPresent()) {
-                doctorUser.getDoctor().addPatient(patientUser.get().getPatient());
-                patientUser.get().getPatient().setDoctor(doctorUser.getDoctor());
-            }
-            request.get().setRequestStatus(status);
-            int i = 0;
-
-            healRequestRepository.save(request.get());
-            userService.updateUser(patientUser.get());
-            userService.updateUser(doctorUser);
-        }
+        healRequestService.setHealRequestStatusAndSaveUsersInDB(patientId, requestId, status);
         return redirectHandler.redirectView(redirectHandler.doctorMainUrl + "requests");
     }
 
     @GetMapping("/patients")
     @Secured("ROLE_DOCTOR")
     public ModelAndView see_all_patients() {
-        User currentUser = userService.get_currently_loggedInUser();
-
-        Collection<Patient> allPatientsToDoctorUser = currentUser.getDoctor().getPatients();
-        List<User> doctorUserPatients = new ArrayList<>();
-        for (Patient patient : allPatientsToDoctorUser) {
-            doctorUserPatients.add(patient.getUser());
-        } 
-        
-         ModelAndView modelAndView = new ModelAndView("user_doctor/doctor_patients_list.html");
-         modelAndView.addObject("doctorPatients", doctorUserPatients);
-         modelAndView.addObject("hasNoPatients", allPatientsToDoctorUser.size() > 0 ? false : true);
-         return modelAndView; 
-
+         return userService.getAllPatientUsersForDoctorAndReturnModelAndView(); 
     }
 
 
@@ -123,13 +97,13 @@ public class DoctorUserController {
         Optional<User> userDoctor = userService.findById(id);
         if (userDoctor.isPresent()) {
             modelAndView.addObject("doctorInfo", userDoctor.get());
-            modelAndView.addObject("patientId", userService.get_currently_loggedInUser().getId()); 
+            modelAndView.addObject("patientId", userService.getCurrentlyLoggedInUser().getId()); 
             var doctorDepartment = HospitalDepartments.valueOf(userDoctor.get().getDoctor().getDepartment()).getDepartmentName();   
             modelAndView.addObject("department", doctorDepartment);
             if (healRequestRepository.count() != 0) {
                 Optional<HealRequest> request = healRequestRepository.findAll().stream()
                                                                      .filter(req -> req.getDoctor().getId().equals(id) 
-                                                                                 && req.getPatient().getId().equals(userService.get_currently_loggedInUser()
+                                                                                 && req.getPatient().getId().equals(userService.getCurrentlyLoggedInUser()
                                                                                                                                .getId())).findAny(); 
                 modelAndView.addObject("request", request.get()); 
             } 
@@ -145,7 +119,7 @@ public class DoctorUserController {
     public RedirectView send_healRequest(@PathVariable Long doctorId, Long patientId) {
         if (!healRequestService.alreadyHasSuchHealRequest(doctorId, patientId)) {
             
-            User currentUser = userService.get_currently_loggedInUser();
+            User currentUser = userService.getCurrentlyLoggedInUser();
             if (currentUser.getId().equals(patientId)) {
                 Optional<User> doctorUser = userService.findById(doctorId);
                 if (doctorUser.isPresent()) {
