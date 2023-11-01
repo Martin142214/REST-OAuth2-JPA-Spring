@@ -9,26 +9,32 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.example.RestOAuth2JPA.DTO.entities.auth.User;
 import com.example.RestOAuth2JPA.components.mappers.GrantedAuthoritiesMapper;
 import com.example.RestOAuth2JPA.enums.Roles;
 import com.example.RestOAuth2JPA.services.additional.RedirectHandler;
 import com.example.RestOAuth2JPA.services.auth.UserService;
 
 @Controller
+@ControllerAdvice
 public class HomeController {
 
     @Autowired UserService userService;
 
     @Autowired RedirectHandler redirectHandler;
+
+    //private static final Authentication AUTHENTICATION = SecurityContextHolder.getContext().getAuthentication();
 
     @Autowired
     public HomeController() {
@@ -40,8 +46,13 @@ public class HomeController {
         return "index.html";
     }
 
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("currentUser", userService.getCurrentlyLoggedInUser());
+    }
+
     @GetMapping("/user/checkPath")
-    public RedirectView users_url_handler_endpoint(){
+    public RedirectView usersUrlHandlerEndpoint(){
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         try {
             var auth = GrantedAuthoritiesMapper.get_authorities_info(authentication).get("role_authorities").toString();
@@ -52,43 +63,6 @@ public class HomeController {
         }
 
         return redirectHandler.redirectView(redirectHandler.redirect_user_handler(authentication));
-
-        /*try {
-            if (GrantedAuthoritiesMapper.get_authorities_info(authentication)
-                                        .get("role_authorities").toString()
-                                        .equals(Roles.ROLE_ADMIN.name().toString())) {
-
-                return userService.redirectView(adminProfileUrl);
-            }
-            else if (GrantedAuthoritiesMapper.get_authorities_info(authentication)
-                                             .get("role_authorities").toString()
-                                             .equals(Roles.ROLE_DOCTOR.name().toString())) {
-
-                return userService.redirectView(doctorProfileUrl);
-            }
-            else if(GrantedAuthoritiesMapper.get_authorities_info(authentication)
-                                            .get("role_authorities").toString()
-                                            .equals(Roles.ROLE_PATIENT.name().toString())) {
-                                                
-                return userService.redirectView(patientProfileUrl);
-            }
-            else {
-                return userService.redirectView("http://localhost:8080/user/login");
-            }   
-        } catch (Exception e) { 
-            return userService.redirectView("http://localhost:8080/user/login");
-        }*/
-        
-
-        /*switch () {
-            case "ROLE_PATIENT":
-                return userService.redirectView(patientProfileUrl);
-            case "ROLE_DOCTOR":
-                return userService.redirectView(doctorProfileUrl);
-            case "ROLE_ADMIN":
-                return userService.redirectView(adminProfileUrl);
-        }*/
-        
     }
     
 }
