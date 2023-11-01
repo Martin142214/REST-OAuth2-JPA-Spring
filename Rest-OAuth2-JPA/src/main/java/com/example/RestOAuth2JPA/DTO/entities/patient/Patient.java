@@ -1,7 +1,9 @@
 package com.example.RestOAuth2JPA.DTO.entities.patient;
 
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
 
 import com.example.RestOAuth2JPA.DTO.entities.Note;
@@ -47,8 +49,8 @@ public class Patient implements Serializable {
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 
-    /*@OneToOne(cascade = CascadeType.ALL, mappedBy = "patient")
-    private User user;*/
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "patient")
+    private User user;
 
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "patient")
@@ -103,11 +105,11 @@ public class Patient implements Serializable {
         this.notes = notes;
     }
     
-    /*public User getUser() {
+    public User getUser() {
         return user;
     }
     
     public void setUser(User user) {
         this.user = user;
-    }*/
+    }
 }

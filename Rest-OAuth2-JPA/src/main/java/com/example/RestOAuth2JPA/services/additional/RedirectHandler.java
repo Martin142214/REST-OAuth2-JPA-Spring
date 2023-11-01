@@ -16,6 +16,10 @@ public class RedirectHandler {
 
     public final String patientProfileUrl = "http://localhost:8080/user/patient/profile";
 
+    public final String patientMainUrl = "http://localhost:8080/user/patient/";
+
+    public final String doctorMainUrl = "http://localhost:8080/user/doctor/";
+
 
     public RedirectHandler() {
         

@@ -1,4 +1,4 @@
-package com.example.RestOAuth2JPA.services;
+package com.example.RestOAuth2JPA.services.auth;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.example.RestOAuth2JPA.DTO.entities.classModels.AuthenticationRequest;
+//import com.example.RestOAuth2JPA.services.userDetails.UserDetailsServiceImplementation;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,10 +22,10 @@ import jakarta.servlet.http.HttpServletRequest;
 @Service
 public class AuthService {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+   // @Autowired
+    //private AuthenticationManager authenticationManager;
 
-    @Autowired UserDetailsServiceImplementation userDetailsService;
+    //@Autowired UserDetailsServiceImplementation userDetailsService;
 
     @Autowired JwtUtil jwtUtil;
 
@@ -34,7 +34,7 @@ public class AuthService {
         
     }
 
-    public boolean authenticate(AuthenticationRequest authenticationRequest, HttpServletRequest request) throws Exception {
+    /*public boolean authenticate(AuthenticationRequest authenticationRequest, HttpServletRequest request) throws Exception {
         var username = authenticationRequest.getUsername();
         var password = authenticationRequest.getPassword();
 
@@ -58,11 +58,11 @@ public class AuthService {
 
         return false;
         //return new AuthenticationResponse(token);
-    }
+    }*/
 
     private boolean authenticate(String username, String password) throws Exception {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            //authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             var auth = SecurityContextHolder.getContext().getAuthentication();
             return true;
         } catch (DisabledException e) {
@@ -84,7 +84,7 @@ public class AuthService {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         //TODO the getAuthentication() method is != null beacause there is some authentication set from somewhere
         // try to find from where is set the authentication
-        if (username != null) {
+        /*if (username != null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
             if (jwtUtil.validateToken(jwtToken, userDetails)) {
@@ -101,7 +101,7 @@ public class AuthService {
                 int i = 0;
             }
 
-        }
+        }*/
         return true;
     }
 
