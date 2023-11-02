@@ -40,4 +40,8 @@ public class FileDB {
         this.type = type;
         this.imagePath = imagePath;
     }
+
+    public boolean ifAllFieldsAreNotEmpty() {
+        return this.name == null || this.type == null || this.imagePath == null ? false : true;
+    }
 }
