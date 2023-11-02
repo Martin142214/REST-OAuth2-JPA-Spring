@@ -1,5 +1,6 @@
 package com.example.RestOAuth2JPA.services.requests;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,12 @@ public class HealRequestService implements IHealRequestService {
 
     @Autowired UserService userService;
 
-    @Autowired
+    private Collection<HealRequest> allUpToDateHealRequestsInDB;
 
-    public HealRequestService() {
-        
+    @Autowired
+    public HealRequestService(IHealRequestRepository healRequestRepository) {
+        this.healRequestRepository = healRequestRepository;
+        this.allUpToDateHealRequestsInDB = this.healRequestRepository.findAll();
     }
 
     public Optional<HealRequest> findHealRequestById(final Long id) {
@@ -32,32 +35,33 @@ public class HealRequestService implements IHealRequestService {
 
     public boolean alreadyHasSuchHealRequest(final Long doctorId, final Long patientId) {
         
-        Optional<HealRequest> request = healRequestRepository.findAll().stream()
-                                                                       .filter(req -> req.getDoctor().getId().equals(doctorId) && 
+        Optional<HealRequest> request = allUpToDateHealRequestsInDB.stream()
+                                                                    .filter(req -> req.getDoctor().getId().equals(doctorId) && 
                                                                                       req.getPatient().getId().equals(patientId))
-                                                                       .findAny();
+                                                                    .findAny();
         return request.isPresent();
     }
 
     public void setHealRequestStatusAndSaveUsersInDB(final Long patientId, final Long requestId, final HealRequestStatus status) {
         User doctorUser = userService.getCurrentlyLoggedInUser();
-        Optional<User> patientUser = userService.getUserById(patientId);
+        Optional<User> patientUser = userService.findById(patientId);
         Optional<HealRequest> request = this.findHealRequestById(requestId);
         if (request.isPresent()) {
             if (status.equals(HealRequestStatus.Approved) && patientUser.isPresent()) {
                 doctorUser.getDoctor().addPatient(patientUser.get().getPatient());
                 patientUser.get().getPatient().setDoctor(doctorUser.getDoctor());
             }
+            request.get().setRequestStatus(status);
 
             try {
-                request.get().setRequestStatus(status);
-          
                 healRequestRepository.save(request.get());
-                userService.updateUser(patientUser.get());
-                userService.updateUser(doctorUser);
+                userService.saveNewOrUpdateUser(patientUser.get());
+                userService.saveNewOrUpdateUser(doctorUser);
             } catch (Exception e) {
-                
                 e.printStackTrace();
+            }
+            finally {
+                this.allUpToDateHealRequestsInDB = healRequestRepository.findAll();
             }
         }
     }
