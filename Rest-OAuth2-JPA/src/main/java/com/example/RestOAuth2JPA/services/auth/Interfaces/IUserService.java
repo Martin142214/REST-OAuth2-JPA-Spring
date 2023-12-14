@@ -14,7 +14,7 @@ public interface IUserService {
 
     User getCurrentlyLoggedInUser();
 
-    Optional<User> findById(Long id);
+    User getAnyUserById(Long id);
 
     User getUserByUsername(String username);
 
