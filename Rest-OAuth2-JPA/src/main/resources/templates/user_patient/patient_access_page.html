@@ -46,7 +46,7 @@
                             <div th:replace="/user_doctor/modals/create_note_modal_container.html"></div>
                         </div>
                         <div>
-                            <button type="button" class="btn btn-outline-primary ms-1" th:onclick="openNotesListModal([[${patientFullName}]], [[${patientNotes}]])">See notes</button>
+                            <button type="button" class="btn btn-outline-primary ms-1" th:onclick="openNotesListModal([[${patientInfo.id}]], [[${patientFullName}]], [[${patientNotes}]])">See notes</button>
                             <div th:replace="/user_doctor/modals/notes_list_modal_container.html"></div>
                         </div>
                       </div>
@@ -127,7 +127,10 @@
                         <form th:action="@{|/user/patient/profile/${patientInfo.id}/setStatus|}" method="POST">
                             <select class="form-control" name="status" id="statuses" title="statusSelect" onchange="this.form.submit()">
                                 <option selected disabled>Status</option>
-                                <option th:each="status : ${T(com.example.RestOAuth2JPA.enums.Status).values()}" th:value="@{status}" 
+                                <option th:each="status : ${T(com.example.RestOAuth2JPA.enums.Status).values()}"
+                                        th:disabled="${patientInfo.patient.status eq status}"
+                                        th:selected="${patientInfo.patient.status eq status}"
+                                        th:value="${status}" 
                                         th:text="${status}"></option>
                             </select>
                         </form>

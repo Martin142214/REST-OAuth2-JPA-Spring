@@ -18,25 +18,22 @@
     <div class="container">
         <h3 id="patientNameTitle"></h3>
         <div>
-            <img id="patientImage" alt="image for user" style="float: right; width: 200px;">
+            <img id="patientImage" alt="image for user" style="width: 200px;">
         </div>
         <br>
-        <div>
-            <label><b>Diagnosis</b></label>
-            <input type="text" class="form-control" placeholder="Diagnosis.." name="diagnosis" required>
-        </div>
 
         <div>
-            <label><b>Description</b></label>
-            <input type="text" class="form-control" placeholder="Description.." name="description" required>
-        </div>
-
-        <div>
-            <label>Place to treat</label>
+            <label><b>Place to treat</b></label>
             <select class="form-control" name="placeOfTreatment" title="placeOfTreatment">
                 <option id="treatmentOption" th:each="treatmentPlace : ${T(com.example.RestOAuth2JPA.enums.PlaceOfTreatment).values()}" th:text="${treatmentPlace}" th:value="${treatmentPlace}"></option>
             </select>
         </div>
+
+        <div>
+            <label><b>Description</b></label>
+            <textarea class="form-control" rows="3" placeholder="Description.." name="description" required></textarea>
+        </div>
+
 
         <input type="hidden" name="doctorId" id="doctorIdInputHidden">
 
