@@ -17,6 +17,8 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
 
     @Autowired IUsersRepository usersRepository;
 
+    //@Autowired UserService userService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         
@@ -28,6 +30,29 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
                 userDetails.isEnabled(), true, true, true, 
                 userDetails.getAuthorities()
             );
+
+            //TODO check this func to not have circular dependency
+            //this.userService.setCurrentUser(userDetails.user);
+
+            return loggedInUser;
+    }
+
+    //FOR test purposes
+    //TODO remove later
+    public UserDetails loadUserByUsername(String username, IUsersRepository usersRepository) throws UsernameNotFoundException {
+        
+            CustomUserDetails userDetails = new CustomUserDetails(username, usersRepository);
+            
+            org.springframework.security.core.userdetails.User loggedInUser = new org.springframework.security.core.userdetails.User(
+                userDetails.getUsername(), 
+                userDetails.getPassword(), 
+                userDetails.isEnabled(), true, true, true, 
+                userDetails.getAuthorities()
+            );
+
+            //TODO check this func to not have circular dependency
+            //this.userService.setCurrentUser(userDetails.user);
+
             return loggedInUser;
     }
 

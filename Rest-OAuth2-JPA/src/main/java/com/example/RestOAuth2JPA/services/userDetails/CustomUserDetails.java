@@ -21,7 +21,7 @@ import com.example.RestOAuth2JPA.DTO.repositories.auth.IUsersRepository;
 // @component
 public class CustomUserDetails implements UserDetails {
 
-    private User user;
+    public User user;
 
     public CustomUserDetails(String username, IUsersRepository usersRepository) {
         try {
