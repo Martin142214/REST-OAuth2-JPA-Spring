@@ -27,6 +27,14 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //TEST constructor
+    //TODO remove later
+    public Doctor(Long id, String department, String positionName) {
+        this.id = id;
+        this.department = department;
+        this.positionName = positionName;
+    }
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "personal_info_id", referencedColumnName = "id")
     private Personal_info personalInfo;

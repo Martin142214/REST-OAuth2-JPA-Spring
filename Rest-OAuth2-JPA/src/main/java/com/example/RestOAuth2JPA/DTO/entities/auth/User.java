@@ -40,6 +40,17 @@ public class User {
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 
+    //TEST constructor
+    //TODO Remove later
+    public User(Long id, String username, String email, Role role, Doctor doctor, Patient patient) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.role = role;
+        this.doctor = doctor;
+        this.patient = patient;
+    }
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
@@ -83,13 +94,17 @@ public class User {
         
     }
 
-    public User(String username) {
-        this.username = username;
-    }
+    
 
     public User(String username, String email) {
         this.username = username;
         this.email = email;
+    }
+
+    // ctor for test purposes
+    public User(Long id, String username) {
+        setId(id);
+        setUsername(username);
     }
     
     /*@ManyToMany 

@@ -1,5 +1,7 @@
 package com.example.RestOAuth2JPA.DTO.entities.patient;
 
+import java.util.Date;
+
 import com.example.RestOAuth2JPA.DTO.entities.Note;
 import com.example.RestOAuth2JPA.enums.PlaceOfTreatment;
 
@@ -14,6 +16,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.persistence.Transient;
 
 @Entity
@@ -36,11 +40,30 @@ public class NoteData {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "date")
+    @Temporal(TemporalType.DATE)
+    private Date dateOfNote;
+
+    public Long getId() {
+        return id;
+    }
+
+    public Date getDateOfNote() {
+        return dateOfNote;
+    }
+
+    public void setDateOfNote(Date dateOfNote) {
+        this.dateOfNote = dateOfNote;
+    }
+
     public String getDiagnosis() {
         return diagnosis;
     }
 
     public void setDiagnosis(String diagnosis) {
+        if (diagnosis == null) {
+            this.diagnosis = "not selected";
+        }
         this.diagnosis = diagnosis;
     }
 
@@ -57,16 +80,19 @@ public class NoteData {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        if (!description.isBlank() || description != null) {
+            this.description = description;
+        }
     }
 
     public NoteData() {
         
     }
 
-    public NoteData(String diagnosis, PlaceOfTreatment placeOfTreatment, String description) {
-        this.diagnosis = diagnosis;
-        this.placeOfTreatment = placeOfTreatment;
-        this.description = description;
+    public NoteData(String diagnosis, PlaceOfTreatment placeOfTreatment, String description, Date date) {
+        setDiagnosis(diagnosis);
+        setPlaceOfTreatment(placeOfTreatment);
+        setDescription(description);
+        setDateOfNote(date);
     }
 }
