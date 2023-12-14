@@ -109,8 +109,8 @@ public class UserService implements IUserService, IUserPatientService, IUserDoct
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<User> findById(Long id) {
-        return _usersRepository.findById(id);
+    public User getAnyUserById(Long id) {
+        return _usersRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -127,10 +127,8 @@ public class UserService implements IUserService, IUserPatientService, IUserDoct
 
     @Transactional(rollbackFor = {SQLException.class})
     public void deleteUser(final Long id) throws SQLException {
-        Optional<User> user = this.findById(id);
-        if (user.isPresent()) {
-            _usersRepository.delete(user.get());
-        }
+        User user = this.getAnyUserById(id);
+        _usersRepository.delete(user);
     }
 
     @Transactional(readOnly = true)

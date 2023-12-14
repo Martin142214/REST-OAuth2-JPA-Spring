@@ -48,7 +48,8 @@ public class HomeController {
 
     @ModelAttribute
     public void addAttributes(Model model) {
-        model.addAttribute("currentUser", userService.getCurrentlyLoggedInUser());
+        this.userService.setCurrentUser(userService.getCurrentlyLoggedInUser());
+        model.addAttribute("currentUser", userService.getCurrentUser());
     }
 
     @GetMapping("/user/checkPath")
